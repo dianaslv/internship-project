@@ -1,8 +1,7 @@
 import React from 'react';
-import {Jobs} from '../Utils/Queries';
-import {useQuery} from '@apollo/client';
 import PageLayout from '../PageLayout/PageLayout';
 import {useAppContext} from "../Context/ContextProvider";
+import UsersTable from "../Administrator/UsersTable";
 
 export default function LandingPage() {
     const {user} = useAppContext();
@@ -10,6 +9,7 @@ export default function LandingPage() {
 
     return (
         <PageLayout title="Landing page" userType={user.userRole}>
+            <UsersTable/>
         </PageLayout>
     );
 }

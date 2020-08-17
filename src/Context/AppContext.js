@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React from "react";
 
 export const defaultValue = {
     user: {
@@ -7,7 +7,10 @@ export const defaultValue = {
         firstName:"",
         lastName:"",
         password:"",
-        userRole:"sys_admin"
+        userRole:{
+            id: 0,
+            name:""
+        }
     }
 };
 export const AppContext = React.createContext(defaultValue);

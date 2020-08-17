@@ -1,10 +1,6 @@
 import React from 'react';
-import PersistentDrawerLeft from './Drawer/Drawer.js';
-import {useStyles} from './Drawer/DrawerStyles.js';
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-import CompanyFooter from "./Footer/CompanyFooter";
-import AdminFooter from "./Footer/AdminFooter";
+import PersistentDrawerLeft from './Header/Header.js';
+import {useStyles} from './Header/HeaderStyles.js';
 import UserFooter from "./Footer/UserFooter";
 
 export default function PageLayout({children, title, userType}) {
@@ -16,6 +12,7 @@ export default function PageLayout({children, title, userType}) {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 {children}
+              <br/>
               <UserFooter/>
             </main>
         </div>

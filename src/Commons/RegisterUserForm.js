@@ -1,36 +1,28 @@
 import React from 'react';
 import {useState} from "react";
 import {useMutation} from "@apollo/client";
-import {AddUser} from '../Utils/Queries';
 import {withRouter} from 'react-router-dom';
 
 
-function UserRegisterForm() {
-    const [state, setState] = useState({
+export default function RegisterUserForm({handleSubmitData}) {
+    const [user, setUser] = useState({
         username: '',
         password: '',
         firstName: '',
         lastName: ''
     })
-    const [addUser, {data}] = useMutation(AddUser);
+
 
     const handleChange = (event) => {
-        setState({
-            ...state,
+        setUser({
+            ...user,
             [event.target.name]: event.target.value
         });
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        addUser({
-            variables: {
-                username: state.username,
-                password: state.password,
-                firstName: state.firstName,
-                lastName: state.lastName
-            }
-        }).then(r =>console.log(data));
+        handleSubmitData(user);
     }
 
 
@@ -45,53 +37,51 @@ function UserRegisterForm() {
                     <input
                         name="firstName"
                         type="text"
-                        value={state.firstName}
+                        value={user.firstName}
                         onChange={event => {
                             event.preventDefault();
                             handleChange(event);
                         }}/>
                 </label>
-                <br/>
+
                 <label>
                     Last Name
                     <input
                         name="lastName"
                         type="text"
-                        value={state.lastName}
+                        value={user.lastName}
                         onChange={event => {
                             event.preventDefault();
                             handleChange(event);
                         }}/>
                 </label>
-                <br/>
+
                 <label>
                     Email
                     <input
                         name="username"
                         type="text"
-                        value={state.username}
+                        value={user.username}
                         onChange={event => {
                             event.preventDefault();
                             handleChange(event);
                         }}/>
                 </label>
-                <br/>
+
                 <label>
                     Password
                     <input
                         name="password"
                         type="text"
-                        value={state.password}
+                        value={user.password}
                         onChange={event => {
                             event.preventDefault();
                             handleChange(event);
                         }}/>
                 </label>
-                <br/>
-                <button type="submit">Login</button>
+
+                <button type="submit">Register account</button>
             </form>
         </div>
     );
 }
-
-export default withRouter(UserRegisterForm);

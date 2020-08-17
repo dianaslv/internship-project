@@ -1,13 +1,28 @@
 import React from 'react';
-import UserRegisterForm from "./UserRegisterForm";
+import {useMutation} from "@apollo/client";
+import RegisterUserForm from "../Commons/RegisterUserForm";
+import {withRouter} from "react-router-dom";
+import {AddUser} from "../Apollo/Queries/UserQueries/UserQueries";
 
-export default class Register extends React.Component {
+function Register() {
+    const [addUser, {data}] = useMutation(AddUser);
 
-    render() {
-        return (
-            <React.Fragment>
-                <UserRegisterForm/>
-            </React.Fragment>
-        );
+
+    const handleSubmit = (user) => {
+        addUser({
+            variables: {
+                username: user.username,
+                password: user.password,
+                firstName: user.firstName,
+                lastName: user.lastName
+            }
+        }).then(r =>console.log(r));
     }
+
+
+    return (
+        <RegisterUserForm handleSubmitData={handleSubmit}/>
+    );
 }
+
+export default withRouter(Register);

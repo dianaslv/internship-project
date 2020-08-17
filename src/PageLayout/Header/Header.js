@@ -16,11 +16,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
-import {useStyles} from './DrawerStyles.js';
-import Hidden from "@material-ui/core/Hidden";
+import {useStyles} from './HeaderStyles.js';
 
-export default function MiniDrawer({title}) {
+export default function Header({title}) {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);

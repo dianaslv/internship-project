@@ -8,8 +8,13 @@ export default function ContextProvider({children}){
         setUser((prevUser) => {
             return {
                 ...prevUser,
-                userRole: newUser
-            };
+                id:newUser.id,
+                username:newUser.username,
+                firstName:newUser.firstName,
+                lastName:newUser.lastName,
+                password:newUser.password,
+                userRole:newUser.userRole.name
+                }
         });
 
     const contextValue = {

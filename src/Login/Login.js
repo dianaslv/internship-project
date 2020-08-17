@@ -1,7 +1,6 @@
 import React from 'react';
 import UserLoginForm from './UserLoginForm.js';
 import {Link} from "react-router-dom";
-import {defaultValue, AppContext} from "../Context/AppContext";
 
 
 export default class Login extends React.Component {

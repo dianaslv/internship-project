@@ -26,6 +26,7 @@ const useStyles = makeStyles({
 export default function JobCard(props) {
     console.log(props);
     const classes = useStyles();
+    console.log(props.jobSkills)
     return (
         <Card className={classes.root} variant="outlined">
             <CardContent>
@@ -40,12 +41,27 @@ export default function JobCard(props) {
                 </Typography>
                 <Typography variant="body2" component="p">
                     {props.job.description}
-                    <br />
-                    {'"a benevolent smile"'}
                 </Typography>
+                <br/>
+               {props.jobSkills&&props.jobSkills.map((jobSkill)=>{
+                    if(jobSkill.job.id===props.job.id)
+                    return <Typography variant="body2" component="p">
+                        Skill: {jobSkill.skill.name} Rating: {jobSkill.rating}
+                    </Typography>})}
+                <br/>
+                {props.jobRequirements&&props.jobRequirements.map((jobRequirement)=>{
+                    if(jobRequirement.job.id===props.job.id)
+                        return <Typography variant="body2" component="p">
+                            {jobRequirement.name}
+                        </Typography>})}<br/>
+                {props.jobBenefits&&props.jobBenefits.map((jobBenefit)=>{
+                    if(jobBenefit.job.id===props.job.id)
+                        return <Typography variant="body2" component="p">
+                            {jobBenefit.name}
+                        </Typography>})}
             </CardContent>
             <CardActions>
-                <Button size="small">Learn More</Button>
+                <Button size="small">Click to apply now!</Button>
             </CardActions>
         </Card>
     );

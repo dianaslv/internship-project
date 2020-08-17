@@ -1,11 +1,5 @@
 import React from 'react';
-import Login from './Login/Login.js';
-import NotFound from './FourOhFour/NotFound.js';
-import Register from './Register/Register.js';
-import JobsPage from './JobsPage/JobsPage.js';
-import {client} from './Utils/ApolloClient.js';
-import PersistentDrawerLeft from './PageLayout/Drawer/Drawer.js';
-import {Switch, Route} from 'react-router-dom';
+import {client} from './Apollo/ApolloClient.js';
 import {ApolloProvider} from '@apollo/client';
 import Router from "./Router/Router";
 import ContextProvider from "./Context/ContextProvider";

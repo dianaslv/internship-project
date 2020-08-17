@@ -1,14 +1,13 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {withRouter} from 'react-router-dom';
 import {useState} from "react";
 import {useHistory} from 'react-router-dom'
 import {useLazyQuery} from "@apollo/client";
-import {Users} from '../Utils/Queries';
-import {AppContext} from "../Context/AppContext";
 import {useAppContext} from "../Context/ContextProvider";
+import {Users} from "../Apollo/Queries/UserQueries/UserQueries";
 
 function UserLoginForm() {
-    const {user, updateUser} = useAppContext();
+    const {updateUser} = useAppContext();
     const [state, setState] = useState({
         username: '',
         password: ''
@@ -19,23 +18,13 @@ function UserLoginForm() {
                 if (data) {
                     let founded = 0;
                     data.users.find(
-                        // eslint-disable-next-line array-callback-return
                         (user) => {
                             if (user.username === state.username && state.password === user.password) {
                                 alert('Account exists');
                                 founded = 1;
-                                let newUser = {
-                                    username: user.username,
-                                    password: user.password,
-                                    firstName: user.firstName,
-                                    lastName: user.lastName,
-                                    userRole: {
-                                        name: user.name
-                                    }
-                                }
-                                updateUser(user.userRole.name);
+                                updateUser(user);
                                 console.log(user.userRole.name);
-                                history.push('/jobs');
+                                history.push('/home');
                             }
                         }
                     );

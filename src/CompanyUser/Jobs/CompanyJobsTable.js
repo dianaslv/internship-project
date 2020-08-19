@@ -13,6 +13,8 @@ import RequirementsModal from "./Modals/RequirementsModal";
 import {AddJob, DeleteJob, Jobs, UpdateJob} from "../../Apollo/Queries/JobQueries/JobQueries";
 import BenefitsModal from "./Modals/BenefitsModal";
 import MultipleInputs from "./Forms/MultipleInputs";
+import AddJobForm from "./Forms/AddJobForm";
+import AddJobModal from "./Modals/AddJobModal";
 
 const useStyles = makeStyles({
     root: {
@@ -242,6 +244,7 @@ export default function CompanyJobsTable({user}) {
     };
 
     return jobs ? <>
+        <AddJobModal companyId={1}/>
         {jobs.map((job, key) => (
             <>
                 <Card className={classes.root} variant="outlined">
@@ -264,7 +267,6 @@ export default function CompanyJobsTable({user}) {
                         handleUpdateJobRequirement={handleUpdateJobRequirement}
                         handleSubmitJobRequirement={handleSubmitJobRequirement}
                     />
-                    <RequirementsModal jobId={job.id}/>
 
                     <JobBenefitsTable
                         jobId={job.id}
@@ -273,7 +275,6 @@ export default function CompanyJobsTable({user}) {
                         handleUpdateJobBenefit={handleUpdateJobBenefit}
                         handleSubmitJobBenefit={handleSubmitJobBenefit}
                     />
-                    <BenefitsModal jobId={job.id}/>
                     <JobSkillsTable
                         jobId={job.id}
                         skills={job.skills}
@@ -281,7 +282,6 @@ export default function CompanyJobsTable({user}) {
                         handleUpdateJobSkill={handleUpdateJobSkill}
                         handleSubmitJobSkill={handleSubmitJobSkill}
                     />
-                    <SkillsModal jobId={job.id}/>
 
                 </Card>
                 <br/><br/><br/>

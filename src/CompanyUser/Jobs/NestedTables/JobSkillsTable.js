@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import SimpleTable from "../../../Commons/SimpleTable";
 import {useMutation} from "@apollo/client";
 import {DeleteJobSkill, UpdateJobSkillRating} from "../../../Apollo/Queries/JobQueries/JobSkillsQueries";
+import SkillsModal from "../Modals/SkillsModal";
 
 export default function JobSkillsTable(props) {
     const [index, setIndex] = useState(-1);
@@ -48,55 +49,58 @@ export default function JobSkillsTable(props) {
 
     const handleChange = (e, name, i) => {
         const {value} = e.target;
-        console.log(value,name,i);
-        props.handleUpdateJobSkill(e.target.value, e.target.name,props.positionInJobSkillsTable,i);
+        console.log(value, name, i);
+        props.handleUpdateJobSkill(e.target.value, e.target.name, props.positionInJobSkillsTable, i);
     };
 
 
-     const handleRemove = (i) => {
-         deleteJobSkill({
-             variables: {id: skills[i].id}
-             /*,
-                 update: (cache) => {
-                     const existingUsers = cache.readQuery({query: JobSkills});
-                     const newUsers = existingUsers.jobSkills.filter(t => (t.id !== skills[i].id));
-                     cache.writeQuery({
-                         query: JobSkills,
-                         data: {jobSkills: newUsers, __typename: "JobSkill"}
-                     });
-                 }*/
-         }).then(r => console.log(r));
+    const handleRemove = (i) => {
+        deleteJobSkill({
+            variables: {id: skills[i].id}
+            /*,
+                update: (cache) => {
+                    const existingUsers = cache.readQuery({query: JobSkills});
+                    const newUsers = existingUsers.jobSkills.filter(t => (t.id !== skills[i].id));
+                    cache.writeQuery({
+                        query: JobSkills,
+                        data: {jobSkills: newUsers, __typename: "JobSkill"}
+                    });
+                }*/
+        }).then(r => console.log(r));
     };
 
-    return skills?
-        <SimpleTable
-            startEditing={startEditing}
-            editIdx={index}
-            stopEditing={stopEditing}
-            handleChange={handleChange}
-            handleRemove={handleRemove}
-            data={skills}
-            header={[
-                {
-                    name: "Id",
-                    prop: "id"
-                },
-                {
-                    name: "Rating",
-                    prop: "rating"
-                },
-                {
-                    name: "Skill Id",
-                    prop: "skillId"
-                },
-                {
-                    name: "Skill Name",
-                    prop: "skillName",
-                    disableUpdate:true
-                }
-            ]}
-            title="Skills table"
-        />
+    return skills ?
+        <>
+            <SimpleTable
+                startEditing={startEditing}
+                editIdx={index}
+                stopEditing={stopEditing}
+                handleChange={handleChange}
+                handleRemove={handleRemove}
+                data={skills}
+                header={[
+                    {
+                        name: "Id",
+                        prop: "id"
+                    },
+                    {
+                        name: "Rating",
+                        prop: "rating"
+                    },
+                    {
+                        name: "Skill Id",
+                        prop: "skillId"
+                    },
+                    {
+                        name: "Skill Name",
+                        prop: "skillName",
+                        disableUpdate: true
+                    }
+                ]}
+                title="Skills table"
+            />
+            <SkillsModal jobId={props.jobId}/>
+        </>
         :
         null;
 }

@@ -7,7 +7,8 @@ export default function RequirementForm(props) {
     const [addJobRequirement, {data: addedJobRequirement}] = useMutation(AddJobRequirement);
 
     const handleSubmit = (listOfRequirements) => {
-        listOfRequirements.map((requirement,key)=>{
+        props.handleSubmit(listOfRequirements);
+       /* listOfRequirements.map((requirement,key)=>{
             if(requirement.name!=="")
             addJobRequirement({
                 variables: {
@@ -15,7 +16,7 @@ export default function RequirementForm(props) {
                     jobId: parseInt(props.jobId)
                 }
             }).then(r => console.log(r))
-        })
+        })*/
     };
 
 

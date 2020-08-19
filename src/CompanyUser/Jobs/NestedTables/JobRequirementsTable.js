@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
 import SimpleTable from "../../../Commons/SimpleTable";
-import { useMutation} from "@apollo/client";
+import {useMutation} from "@apollo/client";
 import {DeleteJobRequirement, UpdateJobRequirement} from "../../../Apollo/Queries/JobQueries/JobRequirementsQueries";
+import RequirementsModal from "../Modals/RequirementsModal";
+import Card from "@material-ui/core/Card";
 
 
 export default function JobRequirementsTable(props) {
@@ -29,7 +31,7 @@ export default function JobRequirementsTable(props) {
             }
         }).then(r => {
             console.log(r);
-            console.log(updatedJobRequirements,updatedJob)
+            console.log(updatedJobRequirements, updatedJob)
             setIndex(-1);
         });
 
@@ -37,8 +39,8 @@ export default function JobRequirementsTable(props) {
 
     const handleChange = (e, name, i) => {
         const {value} = e.target;
-        console.log(value,name,i);
-        props.handleUpdateJobRequirement(e.target.value, e.target.name,props.positionInJobRequirementsTable,i);
+        console.log(value, name, i);
+        props.handleUpdateJobRequirement(e.target.value, e.target.name, props.positionInJobRequirementsTable, i);
     };
 
     const handleRemove = (i) => {
@@ -48,25 +50,28 @@ export default function JobRequirementsTable(props) {
     };
 
 
-    return requirements?
-        <SimpleTable
-        startEditing={startEditing}
-        editIdx={index}
-        stopEditing={stopEditing}
-        handleChange={handleChange}
-        handleRemove={handleRemove}
-        data={requirements}
-        header={[
-            {
-                name: "Id",
-                prop: "id"
-            },
-            {
-                name: "Name",
-                prop: "name"
-            }
-        ]}
-        title="Requirements table"/>
+    return requirements ?
+        <>
+            <SimpleTable
+                startEditing={startEditing}
+                editIdx={index}
+                stopEditing={stopEditing}
+                handleChange={handleChange}
+                handleRemove={handleRemove}
+                data={requirements}
+                header={[
+                    {
+                        name: "Id",
+                        prop: "id"
+                    },
+                    {
+                        name: "Name",
+                        prop: "name"
+                    }
+                ]}
+                title="Requirements table"/>
+            <RequirementsModal jobId={props.jobId}/>
+        </>
         :
         null;
 }

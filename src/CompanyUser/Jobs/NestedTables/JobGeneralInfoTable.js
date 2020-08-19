@@ -40,7 +40,8 @@ export default function JobGeneralInfoTable(props) {
     };
 
 
-    return job?<SimpleTable
+    return job?
+        <SimpleTable
         startEditing={startEditing}
         editIdx={index}
         stopEditing={stopEditing}

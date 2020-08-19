@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import SimpleTable from "../../../Commons/SimpleTable";
-import { useMutation} from "@apollo/client";
+import {useMutation} from "@apollo/client";
 import {DeleteJobBenefit, UpdateJobBenefit} from "../../../Apollo/Queries/JobQueries/JobBenefitsQueries";
 import {DeleteJobRequirement} from "../../../Apollo/Queries/JobQueries/JobRequirementsQueries";
+import BenefitsModal from "../Modals/BenefitsModal";
 
 
 export default function JobBenefitsTable(props) {
@@ -29,15 +30,15 @@ export default function JobBenefitsTable(props) {
             }
         }).then(r => {
             console.log(r);
-            console.log(updatedJobBenefits,updatedBenefit)
+            console.log(updatedJobBenefits, updatedBenefit)
             setIndex(-1);
         });
     };
 
     const handleChange = (e, name, i) => {
         const {value} = e.target;
-        console.log(value,name,i);
-        props.handleUpdateJobBenefit(e.target.value, e.target.name,props.positionInJobBenefitsTable,i);
+        console.log(value, name, i);
+        props.handleUpdateJobBenefit(e.target.value, e.target.name, props.positionInJobBenefitsTable, i);
     };
 
     const handleRemove = (i) => {
@@ -47,25 +48,29 @@ export default function JobBenefitsTable(props) {
     };
 
 
-    return benefits?
-        <SimpleTable
-            startEditing={startEditing}
-            editIdx={index}
-            stopEditing={stopEditing}
-            handleChange={handleChange}
-            handleRemove={handleRemove}
-            data={benefits}
-            header={[
-                {
-                    name: "Id",
-                    prop: "id"
-                },
-                {
-                    name: "Name",
-                    prop: "name"
-                }
-            ]}
-            title="Benefits table"/>
+    return benefits ?
+        <>
+            <SimpleTable
+                startEditing={startEditing}
+                editIdx={index}
+                stopEditing={stopEditing}
+                handleChange={handleChange}
+                handleRemove={handleRemove}
+                data={benefits}
+                header={[
+                    {
+                        name: "Id",
+                        prop: "id"
+                    },
+                    {
+                        name: "Name",
+                        prop: "name"
+                    }
+                ]}
+                title="Benefits table"/>
+            <BenefitsModal jobId={props.jobId}/>
+
+        </>
         :
         null;
 }

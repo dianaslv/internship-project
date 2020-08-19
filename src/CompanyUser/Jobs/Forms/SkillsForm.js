@@ -27,8 +27,6 @@ export default function SkillsForm(props) {
     const [skillId, setSkillId] = React.useState(-1);
     const [rating, setRating] = React.useState("");
     const {data, loading} = useQuery(Skills);
-    const [addJobSkill, {data: addedJobSkill}] = useMutation(AddJobSkill);
-    const [addSkill, {data: addedSkill}] = useMutation(AddSkill);
 
     if (loading) return null;
     if (data) data.skills.map((skill) => console.log(skill))
@@ -51,36 +49,8 @@ export default function SkillsForm(props) {
     };
 
     const handleSubmit = () => {
-        if (skillId === -1) {
-            console.log("will add a new skill with value", existingSkill, "for job with id:", props.jobId)
-            addSkill({
-                variables: {
-                    name: existingSkill
-                }
-            })
-                .then(r => {
-                    console.log(r.data.createSkill.id);
-                    addJobSkill({
-                        variables: {
-                            skillId: r.data.createSkill.id,
-                            jobId: parseInt(props.jobId),
-                            rating: parseInt(rating)
-                        }
-                    }).then(r => console.log(r))
-                });
-        } else {
-            console.log("will add an existing skill with id", skillId, " and with value", existingSkill, "for job with id:", props.jobId)
-            addJobSkill({
-                variables: {
-                    skillId: parseInt(skillId),
-                    jobId: parseInt(props.jobId),
-                    rating: parseInt(rating)
-                }
-            }).then(r => {
-                console.log(addedJobSkill);
-            });
+        props.handleSubmit(existingSkill,skillId,rating)
 
-        }
     };
 
 

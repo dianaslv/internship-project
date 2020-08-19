@@ -28,7 +28,7 @@ export default  function MultipleInputs(props) {
     };
 
     return (
-        <div className="App">
+        <>
             {inputList.map((x, i) => {
                 return (
                     <div className="box">
@@ -44,7 +44,6 @@ export default  function MultipleInputs(props) {
                 );
             })}
             <Button onClick={() => handleSubmit()}>Submit</Button>
-            <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div>
-        </div>
+        </>
     );
 }

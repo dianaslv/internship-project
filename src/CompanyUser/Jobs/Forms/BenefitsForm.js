@@ -4,12 +4,13 @@ import {AddJobBenefit} from "../../../Apollo/Queries/JobQueries/JobBenefitsQueri
 import MultipleInputs from "./MultipleInputs";
 
 
-export default function BenefitForm(props) {
+export default function BenefitsForm(props) {
 
-    const [addJobBenefit, {data: addedJobBenefit}] = useMutation(AddJobBenefit);
+   // const [addJobBenefit, {data: addedJobBenefit}] = useMutation(AddJobBenefit);
 
     const handleSubmit = (listOfBenefits) => {
-        listOfBenefits.map((benefit,key)=>{
+        props.handleSubmit(listOfBenefits);
+        /*listOfBenefits.map((benefit,key)=>{
             if(benefit.name!=="")
             addJobBenefit({
                 variables: {
@@ -17,7 +18,7 @@ export default function BenefitForm(props) {
                     jobId: parseInt(props.jobId)
                 }
             }).then(r => console.log(r))
-        })
+        })*/
     };
 
 

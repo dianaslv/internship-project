@@ -3,7 +3,11 @@ import SimpleTable from "../../../Commons/SimpleTable";
 import { useMutation } from "@apollo/client";
 import JobSkillsModal from "../../../CompanyUser/Jobs/Modals/JobSkillsModal";
 import { UpdateJobSkillRating } from "../../../Apollo/Queries/JobQueries/JobSkillsQueries";
-import { UpdateUserSkillRating } from "../../../Apollo/Queries/UserQueries/UserSkillsQueries";
+import {
+  DeleteUserSkill,
+  UpdateUserSkillRating,
+} from "../../../Apollo/Queries/UserQueries/UserSkillsQueries";
+import UserSkillsModal from "../Modals/UserSkillsModal";
 
 export default function UserSkillsTable(props) {
   const [index, setIndex] = useState(-1);
@@ -12,6 +16,7 @@ export default function UserSkillsTable(props) {
     getUpdatedUserSkillRating,
     { data: updatedUserSkillRating },
   ] = useMutation(UpdateUserSkillRating);
+  const [getDeletedUserSkill] = useMutation(DeleteUserSkill);
 
   const startEditing = (i) => {
     setIndex(i);
@@ -39,6 +44,12 @@ export default function UserSkillsTable(props) {
     });
   };
 
+  const handleRemove = (i) => {
+    getDeletedUserSkill({
+      variables: { id: skills[i].id },
+    }).then((r) => console.log(r));
+  };
+
   return skills ? (
     <>
       <SimpleTable
@@ -46,6 +57,7 @@ export default function UserSkillsTable(props) {
         startEditing={startEditing}
         stopEditing={stopEditing}
         handleChange={handleChange}
+        handleRemove={handleRemove}
         data={skills}
         header={[
           {
@@ -68,6 +80,7 @@ export default function UserSkillsTable(props) {
         ]}
         title="Skills table"
       />
+      <UserSkillsModal userId={props.userId} />
     </>
   ) : null;
 }

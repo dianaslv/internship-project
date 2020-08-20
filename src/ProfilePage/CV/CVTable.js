@@ -78,25 +78,6 @@ export default function CVTable() {
         skills={userSkills}
         handleUpdateUserSkill={handleUpdateUserSkill}
       />
-      <SimpleTable
-        editIdx={index}
-        data={userEducations}
-        header={[
-          {
-            name: "Id",
-            prop: "id",
-          },
-          {
-            name: "Institution",
-            prop: "institution",
-          },
-          {
-            name: "description",
-            prop: "description",
-          },
-        ]}
-        title="Users table"
-      />
     </>
   ) : null;
 }

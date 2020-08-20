@@ -66,7 +66,7 @@ export default function JobSkillsTable(props) {
 
   const handleRemove = (i) => {
     deleteJobSkill({
-      variables: { id: skills[i].id },
+      variables: { id: [skills[i].id] },
       /*,
                 update: (cache) => {
                     const existingUsers = cache.readQuery({query: JobSkills});

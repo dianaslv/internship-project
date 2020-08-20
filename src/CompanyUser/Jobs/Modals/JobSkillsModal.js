@@ -5,7 +5,7 @@ import { AddJobSkill } from "../../../Apollo/Queries/JobQueries/JobSkillsQueries
 import { AddSkill } from "../../../Apollo/Queries/SkillsQueries";
 import MultipleSkillsForm from "../Forms/MultipleSkillsForm";
 
-export default function SkillsModal(props) {
+export default function JobSkillsModal(props) {
   const [addJobSkill, { data: addedJobSkill }] = useMutation(AddJobSkill);
   const [addSkill, { data: addedSkill }] = useMutation(AddSkill);
 

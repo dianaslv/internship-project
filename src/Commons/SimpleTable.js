@@ -52,7 +52,7 @@ export default function SimpleTable(props) {
     stopEditing
   ) => {
     const currentlyEditing = editIdx === i;
-    console.log(dataCountries);
+
     return (
       <TableRow key={`tr-${i}`}>
         {header.map((y, k) => (

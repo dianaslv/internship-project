@@ -42,15 +42,15 @@ export default function UserEducationsTable(props) {
     let educationStartDate =
       moment(education.startDate).format("YYYY") +
       "-" +
-      moment(education.startDate).format("M") +
+      moment(education.startDate).format("MM") +
       "-" +
-      moment(education.startDate).format("D");
+      moment(education.startDate).format("DD");
     let educationEndDate =
       moment(education.endDate).format("YYYY") +
       "-" +
-      moment(education.endDate).format("M") +
+      moment(education.endDate).format("MM") +
       "-" +
-      moment(education.endDate).format("D");
+      moment(education.endDate).format("DD");
 
     console.log("educationStartDate", educationStartDate);
     console.log("educationEndDate", educationEndDate);
@@ -96,16 +96,16 @@ export default function UserEducationsTable(props) {
             prop: "description",
           },
           {
+            name: "Institution",
+            prop: "institution",
+          },
+          {
             name: "End Data",
             prop: "endDate",
           },
           {
             name: "Start Data",
             prop: "startDate",
-          },
-          {
-            name: "Institution",
-            prop: "institution",
           },
         ]}
         title="Educations table"

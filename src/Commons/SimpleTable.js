@@ -16,6 +16,8 @@ import Select from "@material-ui/core/Select";
 import { useQuery } from "@apollo/client";
 import { UsersContactInfo } from "../Apollo/Queries/UserQueries/UserQueries";
 import { Countries } from "../Apollo/Queries/UserQueries/CountryQueries";
+import moment from "moment";
+import DateTimePicker from "./DateTimePicker";
 
 const useStyles = makeStyles({
   table: {
@@ -38,17 +40,6 @@ export default function SimpleTable(props) {
   } = props;
 
   if (loading) return null;
-
-  if (props.data) {
-    console.log("data form simple table", props.data);
-    if (props.data[0]) {
-      if (props.data[0]["countryId"] && props.data[0]["countryName"]) {
-        let updatedCountry = {};
-        updatedCountry["id"] = props.data[0]["countryId"];
-        updatedCountry["name"] = props.data[0]["countryName"];
-      }
-    }
-  }
 
   const newRow = (
     x,
@@ -89,6 +80,12 @@ export default function SimpleTable(props) {
                       </option>
                     ))}
                 </Select>
+              ) : y.prop === "endDate" || y.prop === "startDate" ? (
+                <DateTimePicker
+                  field={y.prop}
+                  row={i}
+                  handleChange={props.handleChangeDate}
+                />
               ) : (
                 <TextField
                   name={y.prop}
@@ -108,6 +105,8 @@ export default function SimpleTable(props) {
               ) : (
                 "Not available"
               )
+            ) : y.prop === "endDate" || y.prop === "startDate" ? (
+              moment.unix(x[y.prop]).format("DD/MM/YYYY")
             ) : (
               x[y.prop]
             )}

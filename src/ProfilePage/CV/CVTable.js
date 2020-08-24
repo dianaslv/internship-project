@@ -9,6 +9,8 @@ import JobSkillsTable from "../../CompanyUser/Jobs/NestedTables/JobSkillsTable";
 import SimpleTable from "../../Commons/SimpleTable";
 import Card from "@material-ui/core/Card";
 import UserSkillsTable from "./NestedTables/UserSkillsTable";
+import UserEducationsTable from "./NestedTables/UserEducationsTable";
+import DateTimePicker from "../../Commons/DateTimePicker";
 
 const useStyles = makeStyles({
   root: {
@@ -44,8 +46,18 @@ export default function CVTable() {
   useEffect(() => {
     console.log(data);
     if (data) {
-      setUserEducations(data.user.userEducations);
-      setUserWorkExperiences(data.user.userWorkExperiences);
+      let userEducation = [];
+      data.user.userEducations.map((education, key) => {
+        let newEducation = {
+          id: education.id,
+          description: education.description,
+          endDate: education.endDate,
+          startDate: education.startDate,
+          institution: education.institution,
+        };
+        userEducation.push(newEducation);
+      });
+      setUserEducations(userEducation);
 
       let userSkills = [];
       data.user.userSkills.map((userSkill, key) => {
@@ -71,12 +83,24 @@ export default function CVTable() {
     console.log(userSkills);
   };
 
+  const handleUpdateUserEducations = (value, name, educationPos) => {
+    console.log(value, name);
+    const updatedEducations = [...userEducations];
+    userEducations[educationPos][name] = value;
+    setUserEducations(updatedEducations);
+  };
+
   return userWorkExperiences && userEducations && userSkills ? (
     <>
       <UserSkillsTable
         userId={user.id}
         skills={userSkills}
         handleUpdateUserSkill={handleUpdateUserSkill}
+      />
+      <UserEducationsTable
+        userId={user.id}
+        userEducations={userEducations}
+        handleUpdateUserEducations={handleUpdateUserEducations}
       />
     </>
   ) : null;

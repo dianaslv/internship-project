@@ -8,17 +8,12 @@ import JobGeneralInfoTable from "./NestedTables/JobGeneralInfoTable";
 import JobRequirementsTable from "./NestedTables/JobRequirementsTable";
 import JobBenefitsTable from "./NestedTables/JobBenefitsTable";
 import JobSkillsTable from "./NestedTables/JobSkillsTable";
-import JobSkillsModal from "./Modals/JobSkillsModal";
-import RequirementsModal from "./Modals/RequirementsModal";
 import {
   AddJob,
   DeleteJob,
   Jobs,
   UpdateJob,
 } from "../../Apollo/Queries/JobQueries/JobQueries";
-import BenefitsModal from "./Modals/BenefitsModal";
-import MultipleInputs from "./Forms/MultipleInputs";
-import AddJobForm from "./Forms/AddJobForm";
 import AddJobModal from "./Modals/AddJobModal";
 
 const useStyles = makeStyles({
@@ -94,97 +89,6 @@ export default function CompanyJobsTable({ user }) {
     console.log(newArr);
     setJobs([...newArr]);
   };
-
-  const startEditing = (i) => {
-    setIndex(i);
-    console.log("start editing", index);
-  };
-
-  const stopEditing = (i) => {
-    let updatedJob = jobs[i];
-    const jobAvailability = updatedJob.isAvailable === "Available";
-    getUpdatedJobs({
-      variables: {
-        id: updatedJob.id,
-        name: updatedJob.name,
-        description: updatedJob.description,
-        isAvailable: jobAvailability,
-      },
-    }).then((r) => {
-      const updatedJobs = [...jobs];
-      updatedJobs[i] = updatedJob;
-      setJobs(updatedJobs);
-      setIndex(-1);
-    });
-  };
-
-  const handleChange = (e, name, i) => {
-    const { value } = e.target;
-    jobs.map((job, userKey) => {
-      if (i === userKey) {
-        console.log(job, value, e.target.name, jobs[i], jobs[i][e.target.name]);
-        const updatedJobs = [...jobs];
-        updatedJobs[i][e.target.name] = value;
-        setJobs(updatedJobs);
-        console.log(jobs, data);
-      }
-    });
-  };
-
-  const createJobForWriteQuery = (job, id) => {
-    return {
-      name: job.name,
-      id: id,
-      description: job.description,
-      isAvailable: job.isAvailable,
-      __typename: "Job",
-    };
-  };
-
-  const handleSubmit = (job) => {
-    console.log(job);
-    addJob({
-      variables: {
-        name: job.name,
-        description: job.description,
-        isAvailable: true,
-        companyId: 1,
-      },
-      update: (cache, { data: job }) => {
-        console.log("cache job", job);
-        const existingJobs = cache.readQuery({ query: Jobs });
-        console.log("existingJobs", existingJobs);
-        const newJobs = Object.assign([], existingJobs.jobs);
-        newJobs.push(job.createJob);
-        console.log("newJobs", newJobs);
-        cache.writeQuery({
-          query: Jobs,
-          data: { jobs: newJobs, __typename: "Job" },
-        });
-
-        console.log(data, newJobs);
-      },
-    });
-  };
-
-  const handleRemove = async (i) => {
-    console.log("handle remove", i, jobs[i].id);
-    await deleteJob({
-      variables: { id: jobs[i].id },
-      update: (cache) => {
-        const existingJobs = cache.readQuery({ query: Jobs });
-        console.log("existingUsers", existingJobs);
-        const newJobs = existingJobs.jobs.filter((t) => t.id !== jobs[i].id);
-        console.log("newJobs", newJobs);
-        cache.writeQuery({
-          query: Jobs,
-          data: { jobs: newJobs, __typename: "Job" },
-        });
-        console.log(data, newJobs);
-      },
-    });
-  };
-
   const handleUpdateJobGeneralInfo = (value, name, pos) => {
     console.log(value, name, pos);
     const updatedJobs = [...jobs];

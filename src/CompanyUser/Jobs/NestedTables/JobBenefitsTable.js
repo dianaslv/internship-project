@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SimpleTable from "../../../Commons/SimpleTable";
+import CustomTable from "../../../Commons/CustomTable";
 import { useMutation } from "@apollo/client";
 import {
   DeleteJobBenefit,
@@ -59,7 +59,7 @@ export default function JobBenefitsTable(props) {
 
   return benefits ? (
     <>
-      <SimpleTable
+      <CustomTable
         startEditing={startEditing}
         editIdx={index}
         stopEditing={stopEditing}

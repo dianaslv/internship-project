@@ -1,5 +1,5 @@
 import { useAppContext } from "../../Context/ContextProvider";
-import SimpleTable from "../../Commons/SimpleTable";
+import CustomTable from "../../Commons/CustomTable";
 import React, { useEffect, useState } from "react";
 import {
   GetUsersDataForCV,
@@ -72,7 +72,7 @@ export default function ContactInfoTable() {
 
   return user.id && data && contactInfo ? (
     <>
-      <SimpleTable
+      <CustomTable
         startEditing={startEditing}
         stopEditing={stopEditing}
         handleChange={handleChange}
@@ -94,6 +94,7 @@ export default function ContactInfoTable() {
           {
             name: "Country Name",
             prop: "countryName",
+            componentForEditing: "CountrySelector",
           },
           {
             name: "Website",

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SimpleTable from "../../../Commons/SimpleTable";
+import CustomTable from "../../../Commons/CustomTable";
 import { useMutation } from "@apollo/client";
 import {
   DeleteUserEducation,
@@ -26,15 +26,9 @@ export default function UserWorkExperiencesTable(props) {
     console.log("start editing", index);
   };
 
-  const handleChange = (e, name, i) => {
-    const { value } = e.target;
+  const handleChange = (value, name, i) => {
     console.log(value, name, i);
-    props.handleUpdateUserWorkExperiences(e.target.value, e.target.name, i);
-  };
-
-  const handleChangeDate = (field, rowNo, date) => {
-    console.log(date);
-    props.handleUpdateUserWorkExperiences(date, field, rowNo);
+    props.handleUpdateUserWorkExperiences(value, name, i);
   };
 
   const stopEditing = (i) => {
@@ -82,13 +76,12 @@ export default function UserWorkExperiencesTable(props) {
 
   return userWorkExperiences ? (
     <>
-      <SimpleTable
+      <CustomTable
         editIdx={index}
         startEditing={startEditing}
         stopEditing={stopEditing}
         handleChange={handleChange}
         handleRemove={handleRemove}
-        handleChangeDate={handleChangeDate}
         data={userWorkExperiences}
         header={[
           {
@@ -106,15 +99,18 @@ export default function UserWorkExperiencesTable(props) {
           {
             name: "End Data",
             prop: "endDate",
+            componentForEditing: "DateTimePickerComponent",
+            specialFormatForDisplaying: "date",
           },
           {
             name: "Start Data",
             prop: "startDate",
+            componentForEditing: "DateTimePickerComponent",
+            specialFormatForDisplaying: "date",
           },
         ]}
         title="Work Experiences table"
       />
-      <UserWorkExperiencesModal userId={props.userId} />
     </>
   ) : null;
 }

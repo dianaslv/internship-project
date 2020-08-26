@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SimpleTable from "../../../Commons/SimpleTable";
+import CustomTable from "../../../Commons/CustomTable";
 import { useMutation } from "@apollo/client";
 import JobSkillsModal from "../../../CompanyUser/Jobs/Modals/JobSkillsModal";
 import { UpdateJobSkillRating } from "../../../Apollo/Queries/JobQueries/JobSkillsQueries";
@@ -52,7 +52,7 @@ export default function UserSkillsTable(props) {
 
   return skills ? (
     <>
-      <SimpleTable
+      <CustomTable
         editIdx={index}
         startEditing={startEditing}
         stopEditing={stopEditing}
@@ -80,7 +80,6 @@ export default function UserSkillsTable(props) {
         ]}
         title="Skills table"
       />
-      <UserSkillsModal userId={props.userId} />
     </>
   ) : null;
 }

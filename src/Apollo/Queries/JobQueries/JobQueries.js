@@ -7,6 +7,10 @@ export const Jobs = gql`
       name
       description
       isAvailable
+      company {
+        id
+        name
+      }
       jobSkills {
         id
         rating
@@ -71,6 +75,37 @@ export const AddJob = gql`
       name
       description
       isAvailable
+    }
+  }
+`;
+
+export const GetJobById = gql`
+  query GetJobById($id: Int!) {
+    job(id: $id) {
+      id
+      name
+      description
+      isAvailable
+      company {
+        id
+        name
+      }
+      jobSkills {
+        id
+        rating
+        skill {
+          id
+          name
+        }
+      }
+      jobBenefits {
+        id
+        name
+      }
+      jobRequirements {
+        id
+        name
+      }
     }
   }
 `;

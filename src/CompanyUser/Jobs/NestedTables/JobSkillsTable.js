@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SimpleTable from "../../../Commons/SimpleTable";
+import CustomTable from "../../../Commons/CustomTable";
 import { useMutation } from "@apollo/client";
 import {
   DeleteJobSkill,
@@ -66,7 +66,7 @@ export default function JobSkillsTable(props) {
 
   const handleRemove = (i) => {
     deleteJobSkill({
-      variables: { id: [skills[i].id] },
+      variables: { id: skills[i].id },
       /*,
                 update: (cache) => {
                     const existingUsers = cache.readQuery({query: JobSkills});
@@ -81,7 +81,7 @@ export default function JobSkillsTable(props) {
 
   return skills ? (
     <>
-      <SimpleTable
+      <CustomTable
         startEditing={startEditing}
         editIdx={index}
         stopEditing={stopEditing}

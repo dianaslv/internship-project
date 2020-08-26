@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import SimpleTable from "../Commons/SimpleTable";
+import CustomTable from "../Commons/CustomTable";
 import { useMutation, useQuery } from "@apollo/client";
-import RegisterUserForm from "../Commons/RegisterUserForm";
 import {
   AddUser,
   DeleteUser,
   UpdateUser,
   Users,
 } from "../Apollo/Queries/UserQueries/UserQueries";
+import AddUserModal from "./AddUserModal";
 
 export default function UsersTable() {
   const [addUser, { data: addUserReceivedData }] = useMutation(AddUser);
@@ -124,13 +124,13 @@ export default function UsersTable() {
           data: { users: newUsers, __typename: "User" },
         });
       },
-    });
+    }).then((r) => console.log(r));
   };
 
   return users ? (
     <>
-      <RegisterUserForm handleSubmitData={handleSubmit} />
-      <SimpleTable
+      <AddUserModal handleSubmitData={handleSubmit} />
+      <CustomTable
         handleRemove={handleRemove}
         startEditing={startEditing}
         editIdx={index}

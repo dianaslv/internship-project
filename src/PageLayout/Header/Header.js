@@ -98,17 +98,21 @@ export default function Header({ title }) {
           <Divider />
           <List>
             {user &&
-              customRoutes.map((route) => (
-                <Link to={route["path"]}>
-                  <ListItem button>
-                    <ListItemIcon>
-                      {" "}
-                      <InboxIcon />{" "}
-                    </ListItemIcon>
-                    <ListItemText primary={route["name"]} />
-                  </ListItem>
-                </Link>
-              ))}
+              customRoutes.map((route) => {
+                if (!route.customRoute) {
+                  return (
+                    <Link to={route["path"]}>
+                      <ListItem button>
+                        <ListItemIcon>
+                          {" "}
+                          <InboxIcon />{" "}
+                        </ListItemIcon>
+                        <ListItemText primary={route["name"]} />
+                      </ListItem>
+                    </Link>
+                  );
+                }
+              })}
           </List>
           <Divider />
         </Drawer>

@@ -6,12 +6,15 @@ import { UpdateJob } from "../../Apollo/Queries/JobQueries/JobQueries";
 import { GetUsersDataForCV } from "../../Apollo/Queries/UserQueries/UserQueries";
 import { userTypeRoutes } from "../../Router/UserTypeRoutes";
 import JobSkillsTable from "../../CompanyUser/Jobs/NestedTables/JobSkillsTable";
-import SimpleTable from "../../Commons/SimpleTable";
+import CustomTable from "../../Commons/CustomTable";
 import Card from "@material-ui/core/Card";
 import UserSkillsTable from "./NestedTables/UserSkillsTable";
 import UserEducationsTable from "./NestedTables/UserEducationsTable";
 import DateTimePicker from "../../Commons/DateTimePicker";
 import UserWorkExperiencesTable from "./NestedTables/UserWorkExperiencesTable";
+import UserWorkExperiencesModal from "./Modals/UserWorkExperiencesModal";
+import UserEducationsModal from "./Modals/UserEducationsModal";
+import UserSkillsModal from "./Modals/UserSkillsModal";
 
 const useStyles = makeStyles({
   root: {
@@ -118,16 +121,20 @@ export default function CVTable() {
         skills={userSkills}
         handleUpdateUserSkill={handleUpdateUserSkill}
       />
+      <UserSkillsModal userId={user.id} />
       <UserEducationsTable
         userId={user.id}
         userEducations={userEducations}
         handleUpdateUserEducations={handleUpdateUserEducations}
       />
+      <UserEducationsModal userId={user.id} />
+
       <UserWorkExperiencesTable
         userId={user.id}
         userWorkExperiences={userWorkExperiences}
         handleUpdateUserWorkExperiences={handleUpdateUserWorkExperiences}
       />
+      <UserWorkExperiencesModal userId={user.id} />
     </>
   ) : null;
 }

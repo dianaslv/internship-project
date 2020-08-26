@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SimpleTable from "../../../Commons/SimpleTable";
+import CustomTable from "../../../Commons/CustomTable";
 import { useMutation } from "@apollo/client";
 import {
   DeleteUserEducation,
@@ -22,15 +22,9 @@ export default function UserEducationsTable(props) {
     console.log("start editing", index);
   };
 
-  const handleChange = (e, name, i) => {
-    const { value } = e.target;
+  const handleChange = (value, name, i) => {
     console.log(value, name, i);
-    props.handleUpdateUserEducations(e.target.value, e.target.name, i);
-  };
-
-  const handleChangeDate = (field, rowNo, date) => {
-    console.log(date);
-    props.handleUpdateUserEducations(date, field, rowNo);
+    props.handleUpdateUserEducations(value, name, i);
   };
 
   const stopEditing = (i) => {
@@ -78,13 +72,12 @@ export default function UserEducationsTable(props) {
 
   return userEducations ? (
     <>
-      <SimpleTable
+      <CustomTable
         editIdx={index}
         startEditing={startEditing}
         stopEditing={stopEditing}
         handleChange={handleChange}
         handleRemove={handleRemove}
-        handleChangeDate={handleChangeDate}
         data={userEducations}
         header={[
           {
@@ -102,15 +95,18 @@ export default function UserEducationsTable(props) {
           {
             name: "End Data",
             prop: "endDate",
+            componentForEditing: "DateTimePickerComponent",
+            specialFormatForDisplaying: "date",
           },
           {
             name: "Start Data",
             prop: "startDate",
+            componentForEditing: "DateTimePickerComponent",
+            specialFormatForDisplaying: "date",
           },
         ]}
         title="Educations table"
       />
-      <UserEducationsModal userId={props.userId} />
     </>
   ) : null;
 }

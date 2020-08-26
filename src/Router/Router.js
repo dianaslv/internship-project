@@ -7,7 +7,7 @@ import { useAppContext } from "../Context/ContextProvider";
 import { userTypeRoutes } from "./UserTypeRoutes";
 import LandingPage from "../Home/LandingPage";
 import CompanyJobs from "../CompanyUser/Jobs/CompanyJobs";
-import JobsPage from "../JobsPage/JobsPage";
+import JobsPage from "../Jobs/JobsPage";
 import ProfilePage from "../ProfilePage/Profile/ProfilePage";
 
 function Router() {
@@ -19,7 +19,6 @@ function Router() {
       console.log(user, userTypeRoutes);
       let routes = userTypeRoutes[user.userRole];
       routes.map((route, key) => customRoutes.push(route));
-      //customRoutes.push(userTypeRoutes[user.userRole.name]);
       console.log(customRoutes);
     }
   }
@@ -31,6 +30,7 @@ function Router() {
         customRoutes.map((route) => (
           <Route path={route["path"]} component={route["component"]} />
         ))}
+      <Route path="/home" component={JobsPage} />
       <Route path="/register" component={Register} />
       <Route path="/login" component={Login} />
       <Route path="/" component={NotFound} />

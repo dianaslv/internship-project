@@ -13,7 +13,7 @@ export default function DateTimePicker(props) {
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
-    props.handleChange(props.field, props.row, date);
+    props.handleChange(date, props.field, props.row);
   };
 
   return (

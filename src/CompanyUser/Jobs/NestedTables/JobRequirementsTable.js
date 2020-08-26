@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SimpleTable from "../../../Commons/SimpleTable";
+import CustomTable from "../../../Commons/CustomTable";
 import { useMutation } from "@apollo/client";
 import {
   DeleteJobRequirement,
@@ -61,7 +61,7 @@ export default function JobRequirementsTable(props) {
 
   return requirements ? (
     <>
-      <SimpleTable
+      <CustomTable
         startEditing={startEditing}
         editIdx={index}
         stopEditing={stopEditing}

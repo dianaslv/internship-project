@@ -1,5 +1,5 @@
 import { useAppContext } from "../../Context/ContextProvider";
-import SimpleTable from "../../Commons/SimpleTable";
+import CustomTable from "../../Commons/CustomTable";
 import React, { useState } from "react";
 import { UpdateUser } from "../../Apollo/Queries/UserQueries/UserQueries";
 import { useMutation } from "@apollo/client";
@@ -30,6 +30,7 @@ export default function UserDataTable() {
   };
 
   const handleChange = (e) => {
+    e.preventDefault();
     const { value } = e.target;
     const updatedUser = { ...user };
     updatedUser[e.target.name] = value;
@@ -38,7 +39,7 @@ export default function UserDataTable() {
 
   return user.id ? (
     <>
-      <SimpleTable
+      <CustomTable
         startEditing={startEditing}
         editIdx={index}
         stopEditing={stopEditing}

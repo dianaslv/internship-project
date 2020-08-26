@@ -4,7 +4,7 @@ import RegisterUserForm from "../Commons/RegisterUserForm";
 import { withRouter } from "react-router-dom";
 import { AddUser } from "../Apollo/Queries/UserQueries/UserQueries";
 
-function Register() {
+function Register(props) {
   const [addUser, { data }] = useMutation(AddUser);
 
   const handleSubmit = (user) => {
@@ -15,7 +15,10 @@ function Register() {
         firstName: user.firstName,
         lastName: user.lastName,
       },
-    }).then((r) => console.log(r));
+    }).then((r) => {
+      const { history } = props;
+      history.push("/login");
+    });
   };
 
   return <RegisterUserForm handleSubmitData={handleSubmit} />;

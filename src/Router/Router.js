@@ -1,14 +1,14 @@
 import React from "react";
-import Login from "../Login/Login.js";
-import NotFound from "../FourOhFour/NotFound.js";
-import Register from "../Register/Register.js";
+import Login from "../Pages/Login/Login.js";
+import NotFound from "../Pages/FourOhFour/NotFound.js";
+import Register from "../Pages/Register/Register.js";
 import { Switch, Route } from "react-router-dom";
 import { useAppContext } from "../Context/ContextProvider";
 import { userTypeRoutes } from "./UserTypeRoutes";
-import LandingPage from "../Home/LandingPage";
-import CompanyJobs from "../CompanyUser/Jobs/CompanyJobs";
-import JobsPage from "../Jobs/JobsPage";
-import ProfilePage from "../ProfilePage/Profile/ProfilePage";
+import LandingPage from "../Pages/Home/LandingPage";
+import CompanyJobs from "../Pages/CompanyUser/CompanyJobs";
+import JobsPage from "../Pages/JobsApplications/JobsPage";
+import ProfilePage from "../Pages/ProfilePage/Profile/ProfilePage";
 
 function Router() {
   const { user } = useAppContext();

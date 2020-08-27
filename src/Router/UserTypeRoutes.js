@@ -1,13 +1,13 @@
-import JobsPage from "../Jobs/JobsPage";
-import LandingPage from "../Home/LandingPage";
-import ProfilePage from "../ProfilePage/Profile/ProfilePage";
+import JobsPage from "../Pages/JobsApplications/JobsPage";
+import LandingPage from "../Pages/Home/LandingPage";
+import ProfilePage from "../Pages/ProfilePage/Profile/ProfilePage";
 import { Route } from "react-router-dom";
 import React from "react";
-import UsersPage from "../Administrator/UsersPage";
-import CompanyJobs from "../CompanyUser/Jobs/CompanyJobs";
-import CVPage from "../ProfilePage/CV/CVPage";
-import JobsDetailsPage from "../Jobs/JobsDetailsPage";
-import JobsApplicationsPage from "../Jobs/JobsApplicationsPage";
+import UsersPage from "../Pages/Administrator/UsersPage";
+import CompanyJobs from "../Pages/CompanyUser/CompanyJobs";
+import CVPage from "../Pages/ProfilePage/CV/CVPage";
+import JobsDetailsPage from "../Pages/JobsApplications/JobsDetailsPage";
+import JobsApplicationsPage from "../Pages/JobsApplications/JobsApplicationsPage";
 
 export const userTypeRoutes = {
   sys_admin: [
@@ -53,7 +53,7 @@ export const userTypeRoutes = {
     {
       component: CompanyJobs,
       path: "/companyjobs",
-      name: "Posted Jobs Page",
+      name: "Posted JobsApplications Page",
     },
     {
       component: JobsDetailsPage,

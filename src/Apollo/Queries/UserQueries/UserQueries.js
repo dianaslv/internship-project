@@ -77,6 +77,81 @@ export const DeleteUser = gql`
   }
 `;
 
+export const GetUserEducationsDataForCV = gql`
+  query GetUserEducationsDataForCV($id: Int!) {
+    user(id: $id) {
+      userEducations {
+        id
+        institution
+        description
+        startDate
+        endDate
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+
+export const GetUserWorkExperiencesDataForCV = gql`
+  query GetUserWorkExperiencesDataForCV($id: Int!) {
+    user(id: $id) {
+      userWorkExperiences {
+        id
+        institution
+        description
+        startDate
+        endDate
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const GetUserSkillsDataForCV = gql`
+  query GetUserSkillsDataForCV($id: Int!) {
+    user(id: $id) {
+      userSkills {
+        id
+        rating
+        skill {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
+export const UpdateContactInfo = gql`
+  mutation UpdateContactInfo(
+    $id: Int!
+    $email: String!
+    $phone: String!
+    $city: String!
+    $website: String!
+    $avatarUrl: String!
+    $about: String!
+    $countryId: Int!
+  ) {
+    updateContactInfo(
+      id: $id
+      email: $email
+      phone: $phone
+      city: $city
+      website: $website
+      avatarUrl: $avatarUrl
+      about: $about
+      countryId: $countryId
+    ) {
+      id
+    }
+  }
+`;
+
 export const GetUsersDataForCV = gql`
   query GetUsersDataForCV($id: Int!) {
     user(id: $id) {
@@ -110,32 +185,6 @@ export const GetUsersDataForCV = gql`
         createdAt
         updatedAt
       }
-    }
-  }
-`;
-
-export const UpdateContactInfo = gql`
-  mutation UpdateContactInfo(
-    $id: Int!
-    $email: String!
-    $phone: String!
-    $city: String!
-    $website: String!
-    $avatarUrl: String!
-    $about: String!
-    $countryId: Int!
-  ) {
-    updateContactInfo(
-      id: $id
-      email: $email
-      phone: $phone
-      city: $city
-      website: $website
-      avatarUrl: $avatarUrl
-      about: $about
-      countryId: $countryId
-    ) {
-      id
     }
   }
 `;

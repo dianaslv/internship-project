@@ -68,10 +68,6 @@ export default function UserWorkExperiencesTable(props) {
         data={userWorkExperiences}
         header={[
           {
-            name: "Id",
-            prop: "id",
-          },
-          {
             name: "Description",
             prop: "description",
           },
@@ -80,14 +76,14 @@ export default function UserWorkExperiencesTable(props) {
             prop: "institution",
           },
           {
-            name: "End Data",
-            prop: "endDate",
+            name: "Start Date",
+            prop: "startDate",
             componentForEditing: "DateTimePickerComponent",
             specialFormatForDisplaying: "date",
           },
           {
-            name: "Start Data",
-            prop: "startDate",
+            name: "End Date",
+            prop: "endDate",
             componentForEditing: "DateTimePickerComponent",
             specialFormatForDisplaying: "date",
           },

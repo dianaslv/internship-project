@@ -56,21 +56,13 @@ export default function UserSkillsTable(props) {
         data={skills}
         header={[
           {
-            name: "Id",
-            prop: "id",
+            name: "Skill Name",
+            prop: "skillName",
+            disableUpdate: true,
           },
           {
             name: "Rating",
             prop: "rating",
-          },
-          {
-            name: "Skill Id",
-            prop: "skillId",
-          },
-          {
-            name: "Skill Name",
-            prop: "skillName",
-            disableUpdate: true,
           },
         ]}
         title="Skills table"

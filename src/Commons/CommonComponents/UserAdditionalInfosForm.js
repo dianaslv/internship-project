@@ -3,14 +3,14 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import Divider from "@material-ui/core/Divider";
-import DateTimePicker from "../../../../Commons/CommonComponents/DateTimePicker";
+import DateTimePicker from "./DateTimePicker";
 import moment from "moment";
 import Alert from "@material-ui/lab/Alert";
 import {
   validateInputList,
   updateInputListErrors,
   cleanErrorsForInputList,
-} from "../../../../Commons/CommonComponents/FormsValidations";
+} from "./FormsValidations";
 
 export default function UserAdditionalInfosForm(props) {
   const [inputList, setInputList] = useState([
@@ -25,7 +25,6 @@ export default function UserAdditionalInfosForm(props) {
   ]);
 
   const handleChange = (e, index) => {
-    console.log(e.target.name, e.target.value, index);
     const { name, value } = e.target;
     const list = [...inputList];
     list[index][name] = value;
@@ -33,18 +32,15 @@ export default function UserAdditionalInfosForm(props) {
   };
 
   const handleChangeDate = (options) => {
-    console.log(options);
     let convertedDate =
       moment(options.value).format("YYYY") +
       "-" +
       moment(options.value).format("M") +
       "-" +
       moment(options.value).format("D");
-    console.log("convertedDate", convertedDate);
     const list = [...inputList];
     list[options.index][options.name] = convertedDate;
     setInputList(list);
-    console.log(inputList);
   };
 
   const handleRemoveClick = (index) => {
@@ -82,7 +78,6 @@ export default function UserAdditionalInfosForm(props) {
   return (
     <>
       {inputList.map((info, i) => {
-        console.log(info);
         return (
           <>
             {info.error !== "" && typeof info.error !== "undefined" ? (

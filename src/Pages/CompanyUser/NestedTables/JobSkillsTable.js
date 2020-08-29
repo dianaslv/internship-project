@@ -36,46 +36,20 @@ export default function JobSkillsTable(props) {
       console.log(r);
       setIndex(-1);
     });
-
-    /*
-        getUpdatedJobSkills({
-            variables: {
-                id: updatedSkill.id,
-                name: updatedSkill.name,
-                jobId: props.jobId
-            }
-        }).then(r => {
-            console.log(r);
-            console.log(updatedJobSkills,updatedSkill)
-            //props.handleSubmitJobSkill(updatedSkill,props.positionInJobSkillsTable);
-            setIndex(-1);
-        });
-        */
   };
 
-  const handleChange = (e, name, i) => {
-    const { value } = e.target;
-    console.log(value, name, i);
+  const handleChange = (options) => {
     props.handleUpdateJobSkill(
-      e.target.value,
-      e.target.name,
+      options.value,
+      options.name,
       props.positionInJobSkillsTable,
-      i
+      options.index
     );
   };
 
   const handleRemove = (i) => {
     deleteJobSkill({
       variables: { id: skills[i].id },
-      /*,
-                update: (cache) => {
-                    const existingUsers = cache.readQuery({query: JobSkills});
-                    const newUsers = existingUsers.jobSkills.filter(t => (t.id !== skills[i].id));
-                    cache.writeQuery({
-                        query: JobSkills,
-                        data: {jobSkills: newUsers, __typename: "JobSkill"}
-                    });
-                }*/
     }).then((r) => console.log(r));
   };
 

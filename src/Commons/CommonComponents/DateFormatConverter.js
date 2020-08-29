@@ -1,16 +1,16 @@
 import moment from "moment";
 
 export default function getDateFormatForUpdateMutation(data) {
-  let workExperienceDate;
+  let dateFormatted;
   if (typeof data === "string") {
-    workExperienceDate = moment.unix(data).format("YYYY-MM-DD");
+    dateFormatted = moment.unix(data).format("YYYY-MM-DD");
   } else {
-    workExperienceDate =
+    dateFormatted =
       moment(data).format("YYYY") +
       "-" +
       moment(data).format("M") +
       "-" +
       moment(data).format("D");
   }
-  return workExperienceDate;
+  return dateFormatted;
 }

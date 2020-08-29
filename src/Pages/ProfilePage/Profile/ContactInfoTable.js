@@ -78,6 +78,7 @@ export default function ContactInfoTable() {
         handleChange={handleChange}
         editIdx={index}
         data={[contactInfo]}
+        disableDelete={true}
         header={[
           {
             name: "Email",
@@ -90,6 +91,11 @@ export default function ContactInfoTable() {
           {
             name: "City",
             prop: "city",
+          },
+          {
+            name: "Avatar",
+            prop: "avatarUrl",
+            specialFormatForDisplaying: "photoUrl",
           },
           {
             name: "Country Name",

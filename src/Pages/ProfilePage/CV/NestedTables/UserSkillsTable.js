@@ -16,7 +16,6 @@ export default function UserSkillsTable(props) {
     getUpdatedUserSkillRating,
     { data: updatedUserSkillRating },
   ] = useMutation(UpdateUserSkillRating);
-  const [getDeletedUserSkill] = useMutation(DeleteUserSkill);
 
   const startEditing = (i) => {
     setIndex(i);
@@ -43,9 +42,7 @@ export default function UserSkillsTable(props) {
   };
 
   const handleRemove = (i) => {
-    getDeletedUserSkill({
-      variables: { id: skills[i].id },
-    }).then((r) => console.log(r));
+    props.handleDeleteUserSkill(i);
   };
 
   return skills ? (

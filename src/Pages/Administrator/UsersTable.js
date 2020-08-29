@@ -80,12 +80,11 @@ export default function UsersTable() {
     });
   };
 
-  const handleChange = (e, name, i) => {
-    const { value } = e.target;
+  const handleChange = (options) => {
     users.map((user, userKey) => {
-      if (i === userKey) {
+      if (options.index === userKey) {
         const updatedUsers = [...users];
-        updatedUsers[i][e.target.name] = value;
+        updatedUsers[options.index][options.name] = options.value;
         setUsers(updatedUsers);
       }
     });

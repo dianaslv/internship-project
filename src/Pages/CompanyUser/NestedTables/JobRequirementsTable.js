@@ -42,14 +42,12 @@ export default function JobRequirementsTable(props) {
     });
   };
 
-  const handleChange = (e, name, i) => {
-    const { value } = e.target;
-    console.log(value, name, i);
+  const handleChange = (options) => {
     props.handleUpdateJobRequirement(
-      e.target.value,
-      e.target.name,
+      options.value,
+      options.name,
       props.positionInJobRequirementsTable,
-      i
+      options.index
     );
   };
 

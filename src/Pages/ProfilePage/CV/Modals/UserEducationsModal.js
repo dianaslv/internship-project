@@ -6,29 +6,10 @@ import moment from "moment";
 import { AddUserEducation } from "../../../../Apollo/Queries/UserQueries/UserEducationsQueries";
 
 export default function UserEducationsModal(props) {
-  const [addUserEducation, { data: addedUserEducation }] = useMutation(
-    AddUserEducation
-  );
-
-  const handleSubmit = (listOfEducations) => {
-    console.log(listOfEducations, props.userId);
-    listOfEducations.map((education, key) => {
-      addUserEducation({
-        variables: {
-          institution: education.institution,
-          description: education.description,
-          userId: props.userId,
-          startDate: education.startDate,
-          endDate: education.endDate,
-        },
-      }).then((r) => console.log(r));
-    });
-  };
-
   return (
     <div>
       <AddDataModal buttonText="Add User Educations">
-        <UserAdditionalInfosForm handleSubmit={handleSubmit} />
+        <UserAdditionalInfosForm handleSubmit={props.handleSubmit} />
       </AddDataModal>
     </div>
   );

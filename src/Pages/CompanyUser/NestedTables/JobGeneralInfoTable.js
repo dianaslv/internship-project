@@ -31,12 +31,10 @@ export default function JobGeneralInfoTable(props) {
     });
   };
 
-  const handleChange = (e, name, i) => {
-    const { value } = e.target;
-    console.log(value, name, i);
+  const handleChange = (options) => {
     props.handleUpdateJobGeneralInfo(
-      e.target.value,
-      e.target.name,
+      options.value,
+      options.name,
       props.positionInJobsTable
     );
   };

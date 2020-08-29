@@ -72,7 +72,6 @@ export default function UserCv(props) {
         userId={props.userId}
         userEducations={userEducations}
       />
-
       <UserWorkExperiencesTable
         userId={props.userId}
         userWorkExperiences={userWorkExperiences}

@@ -13,7 +13,6 @@ export default function UserEducationsTable(props) {
   const [getUpdatedUserEducation, { data: updatedUserEducation }] = useMutation(
     UpdateUserEducation
   );
-  const [getDeletedUserEducation] = useMutation(DeleteUserEducation);
 
   const startEditing = (i) => {
     setIndex(i);
@@ -29,13 +28,11 @@ export default function UserEducationsTable(props) {
   };
 
   const stopEditing = (i) => {
-    setIndex(-1);
-
     let education = userEducations[i];
     let educationStartDate = getDateFormatForUpdateMutation(
       education.startDate
     );
-    let educationEndDate = getDateFormatForUpdateMutation(education.startDate);
+    let educationEndDate = getDateFormatForUpdateMutation(education.endDate);
 
     getUpdatedUserEducation({
       variables: {
@@ -48,13 +45,12 @@ export default function UserEducationsTable(props) {
       },
     }).then((r) => {
       console.log(r);
+      setIndex(-1);
     });
   };
 
   const handleRemove = (i) => {
-    getDeletedUserEducation({
-      variables: { id: userEducations[i].id },
-    }).then((r) => console.log(r));
+    props.handleDeleteUserEducations(i);
   };
 
   return userEducations ? (

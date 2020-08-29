@@ -14,7 +14,6 @@ export default function UserWorkExperiencesTable(props) {
     getUpdatedUserWorkExperience,
     { data: updatedUserWorkExperience },
   ] = useMutation(UpdateUserWorkExperiences);
-  const [getDeletedUserWorkExperience] = useMutation(DeleteUserWorkExperiences);
 
   const startEditing = (i) => {
     setIndex(i);
@@ -55,9 +54,7 @@ export default function UserWorkExperiencesTable(props) {
   };
 
   const handleRemove = (i) => {
-    getDeletedUserWorkExperience({
-      variables: { id: userWorkExperiences[i].id },
-    }).then((r) => console.log(r));
+    props.handleDeleteUserWorkExperiences(i);
   };
 
   return userWorkExperiences ? (

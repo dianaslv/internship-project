@@ -7,22 +7,28 @@ import Input from "@material-ui/core/Input";
 import { useQuery } from "@apollo/client";
 import { Skills } from "../../../Apollo/Queries/SkillsQueries";
 import Divider from "@material-ui/core/Divider";
+import { Alarm } from "@material-ui/icons";
+import { red } from "@material-ui/core/colors";
+import Alert from "@material-ui/lab/Alert";
+import {
+  validateInputList,
+  updateInputListErrors,
+  cleanErrorsForInputList,
+} from "../../../Commons/CommonComponents/FormsValidations";
 
 export default function MultipleSkillsForm(props) {
   const [inputList, setInputList] = useState([
-    { id: "", name: "", rating: "" },
+    { id: "", name: "", rating: "", error: "" },
   ]);
   const { data, loading } = useQuery(Skills);
 
   const handleChange = (e, index) => {
-    console.log(e.target.name, e.target.value, index);
     const { name, value } = e.target;
     if (name === "skill") {
       if (e.target.options) {
         const selectedIndex = e.target.options.selectedIndex;
         const key = e.target.options[selectedIndex].getAttribute("data-key");
         const list = [...inputList];
-        console.log(list[index]);
         list[index]["id"] = key;
         list[index]["name"] = value;
         setInputList(list);
@@ -51,19 +57,29 @@ export default function MultipleSkillsForm(props) {
   };
 
   const handleSubmit = () => {
-    console.log(inputList);
-    props.handleSubmit(inputList);
+    setInputList(cleanErrorsForInputList(inputList));
+    let inputListValidation = validateInputList(inputList);
+    if (inputListValidation.validForm) {
+      props.handleSubmit(inputList);
+    } else {
+      setInputList(
+        updateInputListErrors(inputList, inputListValidation.errors)
+      );
+    }
   };
   if (loading) return null;
 
   return (
     <>
       {inputList.map((skill, i) => {
-        console.log(skill);
+        console.log(skill.error);
         return (
           <>
+            {skill.error !== "" && typeof skill.error !== "undefined" ? (
+              <Alert severity="warning">{skill.error}</Alert>
+            ) : null}
             <InputLabel htmlFor="demo-dialog-native">
-              Select an existing skill
+              Select an existing skill.
               <Select
                 name="skill"
                 native
@@ -113,7 +129,13 @@ export default function MultipleSkillsForm(props) {
           </>
         );
       })}
-      <Button onClick={() => handleSubmit()}>Submit</Button>
+      <Button
+        onClick={() => {
+          handleSubmit();
+        }}
+      >
+        Submit
+      </Button>
     </>
   );
 }

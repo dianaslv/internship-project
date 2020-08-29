@@ -5,10 +5,23 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Divider from "@material-ui/core/Divider";
 import DateTimePicker from "../../../../Commons/CommonComponents/DateTimePicker";
 import moment from "moment";
+import Alert from "@material-ui/lab/Alert";
+import {
+  validateInputList,
+  updateInputListErrors,
+  cleanErrorsForInputList,
+} from "../../../../Commons/CommonComponents/FormsValidations";
 
 export default function UserAdditionalInfosForm(props) {
   const [inputList, setInputList] = useState([
-    { id: "", institution: "", description: "", startDate: "", endDate: "" },
+    {
+      id: "",
+      institution: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+      error: "",
+    },
   ]);
 
   const handleChange = (e, index) => {
@@ -19,17 +32,17 @@ export default function UserAdditionalInfosForm(props) {
     setInputList(list);
   };
 
-  const handleChangeDate = (field, rowNo, date) => {
-    console.log(field, rowNo, date);
+  const handleChangeDate = (options) => {
+    console.log(options);
     let convertedDate =
-      moment(date).format("YYYY") +
+      moment(options.value).format("YYYY") +
       "-" +
-      moment(date).format("M") +
+      moment(options.value).format("M") +
       "-" +
-      moment(date).format("D");
+      moment(options.value).format("D");
     console.log("convertedDate", convertedDate);
     const list = [...inputList];
-    list[rowNo][field] = convertedDate;
+    list[options.index][options.name] = convertedDate;
     setInputList(list);
     console.log(inputList);
   };
@@ -43,13 +56,27 @@ export default function UserAdditionalInfosForm(props) {
   const handleAddClick = () => {
     setInputList([
       ...inputList,
-      { id: "", institution: "", description: "", startDate: "", endDate: "" },
+      {
+        id: "",
+        institution: "",
+        description: "",
+        startDate: "",
+        endDate: "",
+        error: "",
+      },
     ]);
   };
 
   const handleSubmit = () => {
-    console.log(inputList);
-    props.handleSubmit(inputList);
+    setInputList(cleanErrorsForInputList(inputList));
+    let inputListValidation = validateInputList(inputList);
+    if (inputListValidation.validForm) {
+      props.handleSubmit(inputList);
+    } else {
+      setInputList(
+        updateInputListErrors(inputList, inputListValidation.errors)
+      );
+    }
   };
 
   return (
@@ -58,6 +85,10 @@ export default function UserAdditionalInfosForm(props) {
         console.log(info);
         return (
           <>
+            {info.error !== "" && typeof info.error !== "undefined" ? (
+              <Alert severity="warning">{info.error}</Alert>
+            ) : null}
+
             <InputLabel htmlFor="demo-dialog-native">
               Add a new institution
               <TextField

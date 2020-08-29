@@ -6,6 +6,7 @@ import { useMutation } from "@apollo/client";
 
 export default function UserDataTable() {
   const { user, updateUser } = useAppContext();
+  const [userData, updateUserData] = useState(user);
   const [index, setIndex] = useState(-1);
   const [getUpdatedUser] = useMutation(UpdateUser);
 
@@ -14,7 +15,7 @@ export default function UserDataTable() {
   };
 
   const stopEditing = () => {
-    const updatedUser = { ...user };
+    const updatedUser = { ...userData };
     getUpdatedUser({
       variables: {
         id: updatedUser.id,
@@ -29,12 +30,10 @@ export default function UserDataTable() {
     });
   };
 
-  const handleChange = (e) => {
-    e.preventDefault();
-    const { value } = e.target;
-    const updatedUser = { ...user };
-    updatedUser[e.target.name] = value;
-    updateUser(updatedUser);
+  const handleChange = (options) => {
+    const updatedUser = { ...userData };
+    updatedUser[options.name] = options.value;
+    updateUserData(updatedUser);
   };
 
   return user.id ? (
@@ -44,7 +43,8 @@ export default function UserDataTable() {
         editIdx={index}
         stopEditing={stopEditing}
         handleChange={handleChange}
-        data={[user]}
+        data={[userData]}
+        disableDelete={true}
         header={[
           {
             name: "First name",

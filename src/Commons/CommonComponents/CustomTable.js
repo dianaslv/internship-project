@@ -14,6 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import moment from "moment";
 import CountrySelector from "./CountrySelector";
 import DateTimePickerComponent from "./DateTimePickerComponent";
+import Avatar from "@material-ui/core/Avatar";
 
 const useStyles = makeStyles({
   table: {
@@ -62,6 +63,7 @@ export default function CustomTable({
     if (format === "date") return moment.unix(field).format("DD/MM/YYYY");
     if (format === "jobAvailability")
       return field ? "Available" : "Not available";
+    if (format === "photoUrl") return <Avatar alt="avatar" src={field} />;
   };
 
   const newRow = (
@@ -138,9 +140,23 @@ export default function CustomTable({
           {(() => {
             switch (true) {
               case currentlyEditing:
-                return <CheckIcon onClick={() => stopEditing(i)} />;
+                return (
+                  <CheckIcon
+                    onClick={(e) => {
+                      e.preventDefault();
+                      stopEditing(i);
+                    }}
+                  />
+                );
               case !currentlyEditing && !disableUpdate:
-                return <EditIcon onClick={() => startEditing(i)} />;
+                return (
+                  <EditIcon
+                    onClick={(e) => {
+                      e.preventDefault();
+                      startEditing(i);
+                    }}
+                  />
+                );
               default:
                 return null;
             }

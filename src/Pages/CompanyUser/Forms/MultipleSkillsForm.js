@@ -7,8 +7,6 @@ import Input from "@material-ui/core/Input";
 import { useQuery } from "@apollo/client";
 import { Skills } from "../../../Apollo/Queries/SkillsQueries";
 import Divider from "@material-ui/core/Divider";
-import { Alarm } from "@material-ui/icons";
-import { red } from "@material-ui/core/colors";
 import Alert from "@material-ui/lab/Alert";
 import {
   validateInputList,

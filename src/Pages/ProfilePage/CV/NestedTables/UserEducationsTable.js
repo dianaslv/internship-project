@@ -10,9 +10,7 @@ import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents
 export default function UserEducationsTable(props) {
   const [index, setIndex] = useState(-1);
   const { userEducations } = props;
-  const [getUpdatedUserEducation, { data: updatedUserEducation }] = useMutation(
-    UpdateUserEducation
-  );
+  const [getUpdatedUserEducation] = useMutation(UpdateUserEducation);
 
   const startEditing = (i) => {
     setIndex(i);

@@ -33,14 +33,12 @@ export default function AddJobForm(props) {
   const classes = useStyles();
   const [activeStep, setActiveStep] = useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
-  const [addJob, { data: addedJob }] = useMutation(AddJob);
+  const [addJob] = useMutation(AddJob);
   const [job, setJob] = useState({});
-  const [addJobRequirement, { data: addedJobRequirement }] = useMutation(
-    AddJobRequirement
-  );
-  const [addJobBenefit, { data: addedJobBenefit }] = useMutation(AddJobBenefit);
-  const [addJobSkill, { data: addedJobSkill }] = useMutation(AddJobSkill);
-  const [addSkill, { data: addedSkill }] = useMutation(AddSkill);
+  const [addJobRequirement] = useMutation(AddJobRequirement);
+  const [addJobBenefit] = useMutation(AddJobBenefit);
+  const [addJobSkill] = useMutation(AddJobSkill);
+  const [addSkill] = useMutation(AddSkill);
 
   const isStepOptional = (step) => {
     return step === 1;

@@ -11,11 +11,8 @@ import UserSkillsModal from "../Modals/UserSkillsModal";
 
 export default function UserSkillsTable(props) {
   const [index, setIndex] = useState(-1);
-  const { skills } = props;
-  const [
-    getUpdatedUserSkillRating,
-    { data: updatedUserSkillRating },
-  ] = useMutation(UpdateUserSkillRating);
+  const { userSkills } = props;
+  const [updateUserSkill] = useMutation(UpdateUserSkillRating);
 
   const startEditing = (i) => {
     setIndex(i);
@@ -23,14 +20,14 @@ export default function UserSkillsTable(props) {
   };
 
   const handleChange = (options) => {
-    props.handleUpdateUserSkill(options.value, options.name, options.index);
+    props.handleChange(options.value, options.name, options.index);
   };
 
   const stopEditing = (i) => {
-    let updatedSkill = skills[i];
+    let updatedSkill = userSkills[i];
     console.log("submit", updatedSkill.id, updatedSkill.name, props.userId);
 
-    getUpdatedUserSkillRating({
+    updateUserSkill({
       variables: {
         id: parseInt(updatedSkill.id),
         rating: parseInt(updatedSkill.rating),
@@ -42,10 +39,10 @@ export default function UserSkillsTable(props) {
   };
 
   const handleRemove = (i) => {
-    props.handleDeleteUserSkill(i);
+    props.handleRemove(i);
   };
 
-  return skills ? (
+  return userSkills ? (
     <>
       <CustomTable
         editIdx={index}
@@ -53,7 +50,7 @@ export default function UserSkillsTable(props) {
         stopEditing={stopEditing}
         handleChange={handleChange}
         handleRemove={handleRemove}
-        data={skills}
+        data={userSkills}
         header={[
           {
             name: "Skill Name",

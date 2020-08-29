@@ -1,29 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomTable from "../../../Commons/CommonComponents/CustomTable";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import {
+  AddJobSkill,
   DeleteJobSkill,
   UpdateJobSkillRating,
 } from "../../../Apollo/Queries/JobQueries/JobSkillsQueries";
 import JobSkillsModal from "../Modals/JobSkillsModal";
+import { GetJobSkillsById } from "../../../Apollo/Queries/JobQueries/JobQueries";
+import { AddSkill } from "../../../Apollo/Queries/SkillsQueries";
 
 export default function JobSkillsTable(props) {
   const [index, setIndex] = useState(-1);
-  const { skills } = props;
   const [deleteJobSkill] = useMutation(DeleteJobSkill);
-  const [
-    getUpdatedJobSkillRating,
-    { data: updatedJobSkillRating },
-  ] = useMutation(UpdateJobSkillRating);
+  const [getUpdatedJobSkillRating] = useMutation(UpdateJobSkillRating);
+  const { data, loading } = useQuery(GetJobSkillsById, {
+    variables: { id: props.jobId },
+  });
+  const [jobSkills, setJobSkills] = useState([]);
 
-  console.log("skills in table", skills);
+  const [addJobSkill, { data: addedJobSkill }] = useMutation(AddJobSkill);
+  const [addSkill] = useMutation(AddSkill);
+
+  useEffect(() => {
+    if (data) {
+      let updatedJobSkills = [];
+      data.job.jobSkills.map((jobSkill, key) =>
+        updatedJobSkills.push({
+          id: jobSkill.id,
+          rating: jobSkill.rating,
+          skillId: jobSkill.skill.id,
+          skillName: jobSkill.skill.name,
+        })
+      );
+      setJobSkills(updatedJobSkills);
+      console.log(updatedJobSkills, jobSkills);
+    }
+  }, [data]);
+
+  if (loading) return null;
+
   const startEditing = (i) => {
     setIndex(i);
     console.log("start editing", index);
   };
 
   const stopEditing = (i) => {
-    let updatedSkill = skills[i];
+    let updatedSkill = jobSkills[i];
     console.log("submit", updatedSkill.id, updatedSkill.name, props.jobId);
     setIndex(-1);
 
@@ -39,51 +62,99 @@ export default function JobSkillsTable(props) {
   };
 
   const handleChange = (options) => {
-    props.handleUpdateJobSkill(
-      options.value,
-      options.name,
-      props.positionInJobSkillsTable,
-      options.index
-    );
+    const updatedJobSkills = [...jobSkills];
+    updatedJobSkills[options.index][options.name] = options.value;
+    setJobSkills(updatedJobSkills);
   };
 
   const handleRemove = (i) => {
     deleteJobSkill({
-      variables: { id: skills[i].id },
+      variables: { id: jobSkills[i].id },
+      refetchQueries: [
+        {
+          query: GetJobSkillsById,
+          variables: {
+            id: props.jobId,
+          },
+        },
+      ],
     }).then((r) => console.log(r));
   };
 
-  return skills ? (
-    <>
-      <CustomTable
-        startEditing={startEditing}
-        editIdx={index}
-        stopEditing={stopEditing}
-        handleChange={handleChange}
-        handleRemove={handleRemove}
-        data={skills}
-        header={[
-          {
-            name: "Id",
-            prop: "id",
+  const handleSubmit = (skills) => {
+    skills.map((skill, key) => {
+      if (skill.id === -1) {
+        addSkill({
+          variables: {
+            name: skill.name,
           },
-          {
-            name: "Rating",
-            prop: "rating",
+        }).then((r) => {
+          console.log(r.data.createSkill.id);
+          addJobSkill({
+            variables: {
+              skillId: parseInt(r.data.createSkill.id),
+              jobId: parseInt(props.jobId),
+              rating: parseInt(skill.rating),
+            },
+            refetchQueries: [
+              {
+                query: GetJobSkillsById,
+                variables: {
+                  id: props.jobId,
+                },
+              },
+            ],
+          }).then((r) => console.log(r));
+        });
+      } else {
+        addJobSkill({
+          variables: {
+            skillId: parseInt(skill.id),
+            jobId: parseInt(props.jobId),
+            rating: parseInt(skill.rating),
           },
-          {
-            name: "Skill Id",
-            prop: "skillId",
-          },
-          {
-            name: "Skill Name",
-            prop: "skillName",
-            disableUpdate: true,
-          },
-        ]}
-        title="Skills table"
-      />
-      <JobSkillsModal jobId={props.jobId} />
-    </>
-  ) : null;
+          refetchQueries: [
+            {
+              query: GetJobSkillsById,
+              variables: {
+                id: props.jobId,
+              },
+            },
+          ],
+        }).then((r) => {
+          console.log(addedJobSkill);
+        });
+      }
+    });
+  };
+
+  return (
+    jobSkills && (
+      <>
+        {jobSkills.length > 0 && (
+          <CustomTable
+            startEditing={startEditing}
+            editIdx={index}
+            stopEditing={stopEditing}
+            handleChange={handleChange}
+            handleRemove={handleRemove}
+            data={jobSkills}
+            header={[
+              {
+                name: "Rating",
+                prop: "rating",
+              },
+              {
+                name: "Skill Name",
+                prop: "skillName",
+                disableUpdate: true,
+              },
+            ]}
+            title="Skills table"
+          />
+        )}
+        <JobSkillsModal jobId={props.jobId} handleSubmit={handleSubmit} />
+      </>
+    )
+  );
 }

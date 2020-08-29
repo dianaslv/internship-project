@@ -67,7 +67,7 @@ export default function UserCv(props) {
 
   return (
     <>
-      <UserSkillsTable userId={props.userId} skills={userSkills} />
+      <UserSkillsTable userId={props.userId} userSkills={userSkills} />
       <UserEducationsTable
         userId={props.userId}
         userEducations={userEducations}

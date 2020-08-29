@@ -1,10 +1,10 @@
 import React from "react";
-import MultipleInputs from "./MultipleInputs";
+import NameInput from "../../../Commons/CommonComponents/NameInput";
 
 export default function BenefitsForm(props) {
   const handleSubmit = (listOfBenefits) => {
     props.handleSubmit(listOfBenefits);
   };
 
-  return <MultipleInputs handleSubmit={handleSubmit} />;
+  return <NameInput handleSubmit={handleSubmit} />;
 }

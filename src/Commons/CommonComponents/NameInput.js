@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
-export default function MultipleInputs(props) {
+export default function NameInput(props) {
   const [inputList, setInputList] = useState([{ name: "" }]);
 
   const handleInputChange = (e, index) => {

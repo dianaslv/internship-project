@@ -15,7 +15,7 @@ export default function UserSkills(props) {
   const [userSkills, setUserSkills] = useState([]);
   const [addUserSkill, { data: addedUserSkill }] = useMutation(AddUserSkill);
   const [addSkill, { data: addedSkill }] = useMutation(AddSkill);
-  const [getDeletedUserSkill] = useMutation(DeleteUserSkill);
+  const [deleteUserSkill] = useMutation(DeleteUserSkill);
   const { data, loading } = useQuery(GetUserSkillsDataForCV, {
     variables: { id: user.id },
   });
@@ -39,7 +39,7 @@ export default function UserSkills(props) {
 
   if (loading) return null;
 
-  const handleUpdateUserSkill = (value, name, skillPos) => {
+  const handleUpdate = (value, name, skillPos) => {
     console.log(value, name, skillPos);
     const updatedSkills = [...userSkills];
     userSkills[skillPos][name] = value;
@@ -47,7 +47,7 @@ export default function UserSkills(props) {
     console.log(userSkills);
   };
 
-  const handleSubmitUserSkills = (skills) => {
+  const handleSubmit = (skills) => {
     skills.map((skill, key) => {
       if (skill.id === -1) {
         addSkill({
@@ -93,8 +93,8 @@ export default function UserSkills(props) {
       }
     });
   };
-  const handleDeleteUserSkill = (index) => {
-    getDeletedUserSkill({
+  const handleRemove = (index) => {
+    deleteUserSkill({
       variables: { id: userSkills[index].id },
       refetchQueries: [
         {
@@ -111,14 +111,11 @@ export default function UserSkills(props) {
       <>
         <UserSkillsTable
           userId={user.id}
-          skills={userSkills}
-          handleUpdateUserSkill={handleUpdateUserSkill}
-          handleDeleteUserSkill={handleDeleteUserSkill}
+          userSkills={userSkills}
+          handleUpdate={handleUpdate}
+          handleRemove={handleRemove}
         />
-        <UserSkillsModal
-          userId={user.id}
-          handleSubmit={handleSubmitUserSkills}
-        />
+        <UserSkillsModal userId={user.id} handleSubmit={handleSubmit} />
       </>
     )
   );

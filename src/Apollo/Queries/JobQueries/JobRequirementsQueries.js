@@ -1,19 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const JobRequirements = gql`
-  query JobRequirements {
-    jobRequirements {
-      id
-      name
-      job {
-        id
-        name
-        description
-      }
-    }
-  }
-`;
-
 export const UpdateJobRequirement = gql`
   mutation UpdateJobRequirement($id: Int!, $name: String!, $jobId: Int!) {
     updateJobRequirement(id: $id, name: $name, jobId: $jobId) {

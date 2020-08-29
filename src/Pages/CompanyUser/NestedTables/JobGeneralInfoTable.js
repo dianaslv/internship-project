@@ -1,51 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomTable from "../../../Commons/CommonComponents/CustomTable";
-import { useMutation } from "@apollo/client";
-import { UpdateJob } from "../../../Apollo/Queries/JobQueries/JobQueries";
+import { useMutation, useQuery } from "@apollo/client";
+import {
+  GetJobGeneralInfoById,
+  UpdateJob,
+} from "../../../Apollo/Queries/JobQueries/JobQueries";
 
 export default function JobGeneralInfoTable(props) {
   const [index, setIndex] = useState(-1);
-  const [getUpdatedJobs, { data: updatedJobs }] = useMutation(UpdateJob);
-  const { job } = props;
+  const [getUpdatedJobs] = useMutation(UpdateJob);
+  const [jobGeneralInfo, setJobGeneralInfo] = useState({});
+  const { data, loading } = useQuery(GetJobGeneralInfoById, {
+    variables: { id: props.jobId },
+  });
 
-  console.log("job in table", job);
+  useEffect(() => {
+    if (data) {
+      let updatedJobGeneralInfo = {};
+      updatedJobGeneralInfo.id = data.job["id"];
+      updatedJobGeneralInfo.name = data.job["name"];
+      updatedJobGeneralInfo.description = data.job["description"];
+      updatedJobGeneralInfo.isAvailable = data.job["isAvailable"];
+      setJobGeneralInfo(updatedJobGeneralInfo);
+    }
+  }, [data]);
+
+  if (loading) return null;
+
   const startEditing = (i) => {
     setIndex(i);
-    console.log("start editing", index);
   };
 
   const stopEditing = (i) => {
-    console.log("submit", job);
-    let updatedJob = job;
-    const jobAvailability = updatedJob.isAvailable === "Available";
+    const jobAvailability = jobGeneralInfo.isAvailable === "Available";
     getUpdatedJobs({
       variables: {
-        id: updatedJob.id,
-        name: updatedJob.name,
-        description: updatedJob.description,
+        id: jobGeneralInfo.id,
+        name: jobGeneralInfo.name,
+        description: jobGeneralInfo.description,
         isAvailable: jobAvailability,
       },
     }).then((r) => {
-      props.handleSubmitJobGeneralInfo(updatedJob, props.positionInJobsTable);
       setIndex(-1);
     });
   };
 
   const handleChange = (options) => {
-    props.handleUpdateJobGeneralInfo(
-      options.value,
-      options.name,
-      props.positionInJobsTable
-    );
+    const updatedJobs = { ...jobGeneralInfo };
+    updatedJobs[options.name] = options.value;
+    console.log(updatedJobs);
+    setJobGeneralInfo(updatedJobs);
   };
 
-  return job ? (
+  return jobGeneralInfo ? (
     <CustomTable
       startEditing={startEditing}
       editIdx={index}
       stopEditing={stopEditing}
       handleChange={handleChange}
-      data={[job]}
+      data={[jobGeneralInfo]}
       header={[
         {
           name: "Name",

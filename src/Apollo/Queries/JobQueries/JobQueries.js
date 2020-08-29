@@ -30,6 +30,36 @@ export const Jobs = gql`
     }
   }
 `;
+export const GetJobById = gql`
+  query GetJobById($id: Int!) {
+    job(id: $id) {
+      id
+      name
+      description
+      isAvailable
+      company {
+        id
+        name
+      }
+      jobSkills {
+        id
+        rating
+        skill {
+          id
+          name
+        }
+      }
+      jobBenefits {
+        id
+        name
+      }
+      jobRequirements {
+        id
+        name
+      }
+    }
+  }
+`;
 
 export const UpdateJob = gql`
   mutation UpdateJob(
@@ -79,17 +109,9 @@ export const AddJob = gql`
   }
 `;
 
-export const GetJobById = gql`
-  query GetJobById($id: Int!) {
+export const GetJobSkillsById = gql`
+  query GetJobSkillsById($id: Int!) {
     job(id: $id) {
-      id
-      name
-      description
-      isAvailable
-      company {
-        id
-        name
-      }
       jobSkills {
         id
         rating
@@ -98,14 +120,39 @@ export const GetJobById = gql`
           name
         }
       }
-      jobBenefits {
-        id
-        name
-      }
+    }
+  }
+`;
+
+export const GetJobRequirementsById = gql`
+  query GetJobRequirementsById($id: Int!) {
+    job(id: $id) {
       jobRequirements {
         id
         name
       }
+    }
+  }
+`;
+
+export const GetJobBenefitsById = gql`
+  query GetJobBenefitsById($id: Int!) {
+    job(id: $id) {
+      jobBenefits {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const GetJobGeneralInfoById = gql`
+  query GetJobGeneralInfoById($id: Int!) {
+    job(id: $id) {
+      id
+      name
+      description
+      isAvailable
     }
   }
 `;

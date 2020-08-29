@@ -1,23 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const JobSkills = gql`
-  query JobSkills {
-    jobSkills {
-      id
-      rating
-      skill {
-        id
-        name
-      }
-      job {
-        id
-        name
-        description
-      }
-    }
-  }
-`;
-
 export const AddJobSkill = gql`
   mutation AddJobSkill($skillId: Int!, $jobId: Int!, $rating: Int) {
     createJobSkill(skillId: $skillId, jobId: $jobId, rating: $rating) {

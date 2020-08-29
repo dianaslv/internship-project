@@ -90,22 +90,6 @@ export default function UsersTable() {
     });
   };
 
-  const createUserForWriteQuery = (user, id) => {
-    return {
-      firstName: user.firstName,
-      id: id,
-      lastName: user.lastName,
-      password: user.password,
-      userRole: {
-        id: 2,
-        name: "company_user",
-        __typename: "UserRole",
-      },
-      username: user.username,
-      __typename: "User",
-    };
-  };
-
   const handleSubmit = (submittedUser) => {
     addUser({
       variables: {

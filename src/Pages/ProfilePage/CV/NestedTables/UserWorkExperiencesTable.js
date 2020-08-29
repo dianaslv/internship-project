@@ -10,14 +10,10 @@ import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents
 export default function UserWorkExperiencesTable(props) {
   const [index, setIndex] = useState(-1);
   const { userWorkExperiences } = props;
-  const [
-    getUpdatedUserWorkExperience,
-    { data: updatedUserWorkExperience },
-  ] = useMutation(UpdateUserWorkExperiences);
+  const [updateUserWorkExperience] = useMutation(UpdateUserWorkExperiences);
 
   const startEditing = (i) => {
     setIndex(i);
-    console.log("start editing", index);
   };
 
   const handleChange = (options) => {
@@ -38,7 +34,7 @@ export default function UserWorkExperiencesTable(props) {
       workExperience.endDate
     );
 
-    getUpdatedUserWorkExperience({
+    updateUserWorkExperience({
       variables: {
         id: parseInt(workExperience.id),
         userId: parseInt(props.userId),

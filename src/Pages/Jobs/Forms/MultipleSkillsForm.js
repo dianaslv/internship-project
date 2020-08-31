@@ -12,7 +12,7 @@ import {
   validateInputList,
   updateInputListErrors,
   cleanErrorsForInputList,
-} from "../../../Commons/CommonComponents/FormsValidations";
+} from "../../../Commons/CommonComponents/Validations/FormsValidations";
 
 export default function MultipleSkillsForm(props) {
   const [inputList, setInputList] = useState([

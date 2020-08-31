@@ -6,7 +6,7 @@ import { Switch, Route } from "react-router-dom";
 import { useAppContext } from "../Context/ContextProvider";
 import { userTypeRoutes } from "./UserTypeRoutes";
 import LandingPage from "../Pages/Home/LandingPage";
-import CompanyJobs from "../Pages/CompanyUser/CompanyJobs";
+import CompanyJobs from "../Pages/Jobs/CompanyJobs";
 import JobsPage from "../Pages/JobsApplications/JobsPage";
 import ProfilePage from "../Pages/ProfilePage/Profile/ProfilePage";
 

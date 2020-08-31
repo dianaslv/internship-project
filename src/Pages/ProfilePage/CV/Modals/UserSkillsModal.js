@@ -1,6 +1,6 @@
 import React from "react";
 import AddDataModal from "../../../../Commons/CommonComponents/AddDataModal";
-import MultipleSkillsForm from "../../../CompanyUser/Forms/MultipleSkillsForm";
+import MultipleSkillsForm from "../../../Jobs/Forms/MultipleSkillsForm";
 
 export default function UserSkillsModal(props) {
   return (

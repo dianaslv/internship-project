@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import Select from "@material-ui/core/Select";
 import Input from "@material-ui/core/Input";
 import { useQuery } from "@apollo/client";
-import { Countries } from "../../Apollo/Queries/UserQueries/CountryQueries";
+import { Users } from "../../../Apollo/Queries/UserQueries/UserQueries";
 
-export default function CountrySelector(props) {
-  const [country, setCountry] = useState({ id: "", name: "" });
-  const { data: dataCountries, loading } = useQuery(Countries);
+export default function UserSelector(props) {
+  const [user] = useState({ id: "", username: "" });
+  const { data: usersData, loading } = useQuery(Users);
+
+  console.log(props);
+
+  if (loading) return null;
 
   return (
     <Select
-      name="countryName"
+      name="userName"
       native
       value={props.value}
       onChange={(e) =>
@@ -24,11 +28,11 @@ export default function CountrySelector(props) {
       input={<Input id="demo-dialog-native" />}
     >
       <option aria-label="None" value="" />
-      {dataCountries &&
-        country &&
-        dataCountries.counties.map((dataCountry) => (
-          <option data-key={dataCountry.id} value={dataCountry.name}>
-            {dataCountry.name}
+      {usersData &&
+        user &&
+        usersData.users.map((currentUser) => (
+          <option data-key={currentUser.id} value={currentUser.username}>
+            {currentUser.username}
           </option>
         ))}
     </Select>

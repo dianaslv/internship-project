@@ -4,7 +4,7 @@ import ProfilePage from "../Pages/ProfilePage/Profile/ProfilePage";
 import { Route } from "react-router-dom";
 import React from "react";
 import UsersPage from "../Pages/Administrator/AdminPage";
-import CompanyJobs from "../Pages/CompanyUser/CompanyJobs";
+import CompanyJobs from "../Pages/Jobs/CompanyJobs";
 import CVPage from "../Pages/ProfilePage/CV/CVPage";
 import JobsDetailsPage from "../Pages/JobsApplications/JobsDetailsPage";
 import JobsApplicationsPage from "../Pages/JobsApplications/JobsApplicationsPage";

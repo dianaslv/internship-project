@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CustomTable from "../../../Commons/CommonComponents/CustomTable";
+import CustomTable from "../../../Commons/CommonComponents/Tables/CustomTable";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   GetJobGeneralInfoById,

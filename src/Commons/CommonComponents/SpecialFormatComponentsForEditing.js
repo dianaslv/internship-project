@@ -1,10 +1,12 @@
-import CountrySelector from "./CountrySelector";
-import DateTimePickerComponent from "./DateTimePickerComponent";
+import CountrySelector from "./Selectors/CountrySelector";
+import DateTimePickerComponent from "./Date/DateTimePickerComponent";
 import React from "react";
+import UserSelector from "./Selectors/UserSelector";
 
 const components = {
   CountrySelector: CountrySelector,
   DateTimePickerComponent: DateTimePickerComponent,
+  UserSelector: UserSelector,
 };
 
 export default function getComponentForEditing(

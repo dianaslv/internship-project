@@ -1,6 +1,6 @@
 import React from "react";
 import { useMutation } from "@apollo/client";
-import RegisterUserForm from "../../Commons/CommonComponents/RegisterUserForm";
+import RegisterUserForm from "../../Commons/CommonComponents/Forms/RegisterUserForm";
 import { withRouter } from "react-router-dom";
 import { AddUser } from "../../Apollo/Queries/UserQueries/UserQueries";
 

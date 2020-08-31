@@ -8,13 +8,15 @@ import {
 } from "../../../Apollo/Queries/UserQueries/UserQueries";
 import { useMutation, useQuery } from "@apollo/client";
 import AddContactInfoModal from "./AddContactInfoModal";
-import ContactInfoTable from "../../../Commons/CommonComponents/ContactInfoTable";
+import ContactInfoTable from "../../../Commons/CommonComponents/Tables/ContactInfoTable";
+import { ContactInfoById } from "../../../Apollo/Queries/CompanyQueries/CompanyQueries";
 
 export default function UserContactInfo() {
   const { user } = useAppContext();
   const [contactInfo, setContactInfo] = useState({});
   const [updateUserContactInfo] = useMutation(UpdateUserContactInfo);
   const [addContactInfo] = useMutation(AddContactInfo);
+  const [updateContactInfo] = useMutation(UpdateContactInfo);
   const { data, loading } = useQuery(UsersContactInfo, {
     variables: {
       id: user.id,
@@ -59,10 +61,35 @@ export default function UserContactInfo() {
     });
   };
 
+  const handleUpdate = (contactInfo) => {
+    updateContactInfo({
+      variables: {
+        id: contactInfo.id,
+        email: contactInfo.email,
+        phone: contactInfo.phone,
+        city: contactInfo.city,
+        website: contactInfo.website,
+        avatarUrl: contactInfo.avatarUrl,
+        about: contactInfo.about,
+        countryId: parseInt(contactInfo.countryId),
+      },
+      refetchQueries: [
+        {
+          query: UsersContactInfo,
+          variables: {
+            id: user.id,
+          },
+        },
+      ],
+    }).then((r) => {
+      console.log(r);
+    });
+  };
+
   return (
     <>
       {user.id && data && Object.keys(contactInfo).length !== 0 ? (
-        <ContactInfoTable data={contactInfo} />
+        <ContactInfoTable data={contactInfo} handleUpdate={handleUpdate} />
       ) : (
         <AddContactInfoModal handleSubmit={handleSubmit} />
       )}

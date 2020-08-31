@@ -14,7 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import moment from "moment";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
-import getComponentForEditing from "./SpecialFormatComponentsForEditing";
+import getComponentForEditing from "../SpecialFormatComponentsForEditing";
 
 const useStyles = makeStyles({
   table: {

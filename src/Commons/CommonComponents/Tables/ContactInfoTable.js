@@ -1,15 +1,13 @@
 import CustomTable from "./CustomTable";
 import React, { useEffect, useState } from "react";
-import { UpdateContactInfo } from "../../Apollo/Queries/UserQueries/UserQueries";
-import { useMutation } from "@apollo/client";
 
-export default function ContactInfoTable({ data }) {
+export default function ContactInfoTable({ data, handleUpdate }) {
   const [index, setIndex] = useState(-1);
   const [contactInfo, setContactInfo] = useState({});
-  const [updateContactInfo] = useMutation(UpdateContactInfo);
 
   useEffect(() => {
     if (data) {
+      console.log(data);
       setContactInfo({ ...data });
     }
   }, [data]);
@@ -19,21 +17,8 @@ export default function ContactInfoTable({ data }) {
   };
 
   const stopEditing = () => {
-    updateContactInfo({
-      variables: {
-        id: contactInfo.id,
-        email: contactInfo.email,
-        phone: contactInfo.phone,
-        city: contactInfo.city,
-        website: contactInfo.website,
-        avatarUrl: contactInfo.avatarUrl,
-        about: contactInfo.about,
-        countryId: parseInt(contactInfo.countryId),
-      },
-    }).then((r) => {
-      console.log(r);
-      setIndex(-1);
-    });
+    handleUpdate(contactInfo);
+    setIndex(-1);
   };
 
   const handleChange = (options) => {

@@ -1,5 +1,5 @@
 import { useAppContext } from "../../../Context/ContextProvider";
-import CustomTable from "../../../Commons/CommonComponents/CustomTable";
+import CustomTable from "../../../Commons/CommonComponents/Tables/CustomTable";
 import React, { useState } from "react";
 import { UpdateUser } from "../../../Apollo/Queries/UserQueries/UserQueries";
 import { useMutation } from "@apollo/client";

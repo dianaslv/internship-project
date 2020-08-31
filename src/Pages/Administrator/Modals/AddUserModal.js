@@ -1,5 +1,5 @@
 import React from "react";
-import RegisterUserForm from "../../../Commons/CommonComponents/RegisterUserForm";
+import RegisterUserForm from "../../../Commons/CommonComponents/Forms/RegisterUserForm";
 import AddDataModal from "../../../Commons/CommonComponents/AddDataModal";
 
 export default function AddUserModal(props) {

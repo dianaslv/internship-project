@@ -9,7 +9,7 @@ import {
 } from "../../../../Apollo/Queries/UserQueries/UserSkillsQueries";
 import { AddSkill } from "../../../../Apollo/Queries/SkillsQueries";
 import { GetUserSkillsDataForCV } from "../../../../Apollo/Queries/UserQueries/UserQueries";
-import CustomTable from "../../../../Commons/CommonComponents/CustomTable";
+import CustomTable from "../../../../Commons/CommonComponents/Tables/CustomTable";
 
 export default function UserSkills(props) {
   const { user } = useAppContext();

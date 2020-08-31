@@ -8,8 +8,8 @@ import {
   UpdateUserWorkExperiences,
 } from "../../../../Apollo/Queries/UserQueries/UserWorkExperiencesQueries";
 import { GetUserWorkExperiencesDataForCV } from "../../../../Apollo/Queries/UserQueries/UserQueries";
-import CustomTable from "../../../../Commons/CommonComponents/CustomTable";
-import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents/DateFormatConverter";
+import CustomTable from "../../../../Commons/CommonComponents/Tables/CustomTable";
+import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents/Date/DateFormatConverter";
 
 export default function UserWorkExperiences(props) {
   const { user } = useAppContext();

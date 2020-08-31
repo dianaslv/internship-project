@@ -8,8 +8,8 @@ import {
   UpdateUserEducation,
 } from "../../../../Apollo/Queries/UserQueries/UserEducationsQueries";
 import { GetUserEducationsDataForCV } from "../../../../Apollo/Queries/UserQueries/UserQueries";
-import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents/DateFormatConverter";
-import CustomTable from "../../../../Commons/CommonComponents/CustomTable";
+import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents/Date/DateFormatConverter";
+import CustomTable from "../../../../Commons/CommonComponents/Tables/CustomTable";
 
 export default function UserEducations(props) {
   const { user } = useAppContext();

@@ -3,14 +3,14 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import InputLabel from "@material-ui/core/InputLabel";
 import Divider from "@material-ui/core/Divider";
-import DateTimePicker from "./DateTimePicker";
+import DateTimePicker from "../Date/DateTimePicker";
 import moment from "moment";
 import Alert from "@material-ui/lab/Alert";
 import {
   validateInputList,
   updateInputListErrors,
   cleanErrorsForInputList,
-} from "./FormsValidations";
+} from "../Validations/FormsValidations";
 
 export default function UserAdditionalInfosForm(props) {
   const [inputList, setInputList] = useState([

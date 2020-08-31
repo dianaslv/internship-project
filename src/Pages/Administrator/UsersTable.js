@@ -7,7 +7,7 @@ import {
   UpdateUser,
   Users,
 } from "../../Apollo/Queries/UserQueries/UserQueries";
-import AddUserModal from "./AddUserModal";
+import AddUserModal from "./Modals/AddUserModal";
 
 export default function UsersTable() {
   const [addUser, { data: addUserReceivedData }] = useMutation(AddUser);
@@ -112,7 +112,7 @@ export default function UsersTable() {
 
   return users ? (
     <>
-      <AddUserModal handleSubmitData={handleSubmit} />
+      <AddUserModal handleSubmit={handleSubmit} />
       <CustomTable
         handleRemove={handleRemove}
         startEditing={startEditing}

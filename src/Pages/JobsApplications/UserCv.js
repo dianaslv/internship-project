@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from "react";
-import UserSkillsTable from "../ProfilePage/CV/NestedTables/UserSkillsTable";
 import { useAppContext } from "../../Context/ContextProvider";
 import { useQuery } from "@apollo/client";
 import { GetUsersDataForCV } from "../../Apollo/Queries/UserQueries/UserQueries";
-import UserEducationsTable from "../ProfilePage/CV/NestedTables/UserEducationsTable";
-import UserEducationsModal from "../ProfilePage/CV/Modals/UserEducationsModal";
-import UserWorkExperiencesTable from "../ProfilePage/CV/NestedTables/UserWorkExperiencesTable";
-import UserDataTable from "../ProfilePage/Profile/UserDataTable";
-import ContactInfoTable from "../ProfilePage/Profile/ContactInfoTable";
-import PageLayout from "../../Commons/PageLayout/PageLayout";
 export default function UserCv(props) {
-  const { user, updateUser } = useAppContext();
   const [userEducations, setUserEducations] = useState([]);
   const [userWorkExperiences, setUserWorkExperiences] = useState([]);
   const [userSkills, setUserSkills] = useState([]);
@@ -65,9 +57,8 @@ export default function UserCv(props) {
 
   if (loading) return null;
 
-  return (
-    <>
-      <UserSkillsTable userId={props.userId} userSkills={userSkills} />
+  /*
+  * <UserSkillsTable userId={props.userId} userSkills={userSkills} />
       <UserEducationsTable
         userId={props.userId}
         userEducations={userEducations}
@@ -76,6 +67,7 @@ export default function UserCv(props) {
         userId={props.userId}
         userWorkExperiences={userWorkExperiences}
       />
-    </>
-  );
+      * */
+
+  return <></>;
 }

@@ -5,7 +5,7 @@ import { UpdateUser } from "../../../Apollo/Queries/UserQueries/UserQueries";
 import { useMutation } from "@apollo/client";
 
 export default function UserDataTable() {
-  const { user, updateUser } = useAppContext();
+  const { user } = useAppContext();
   const [userData, updateUserData] = useState(user);
   const [index, setIndex] = useState(-1);
   const [getUpdatedUser] = useMutation(UpdateUser);

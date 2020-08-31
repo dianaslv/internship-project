@@ -209,3 +209,54 @@ export const UsersContactInfo = gql`
     }
   }
 `;
+
+export const GetUserContactInfo = gql`
+  query GetUserContactInfo($id: Int!) {
+    user(id: $id) {
+      contactInfo {
+        id
+      }
+    }
+  }
+`;
+
+export const GetUsersUsernames = gql`
+  query GetUsersUsernames {
+    users {
+      id
+      username
+    }
+  }
+`;
+
+export const AddContactInfo = gql`
+  mutation AddContactInfo(
+    $email: String!
+    $phone: String!
+    $city: String!
+    $countryId: Int!
+    $website: String
+    $avatarUrl: String
+    $about: String
+  ) {
+    createContactInfo(
+      email: $email
+      phone: $phone
+      city: $city
+      countryId: $countryId
+      website: $website
+      avatarUrl: $avatarUrl
+      about: $about
+    ) {
+      id
+    }
+  }
+`;
+
+export const UpdateUserContactInfo = gql`
+  mutation UpdateUserContactInfo($id: Int!, $contactInfoId: Int!) {
+    updateUser(id: $id, contactInfoId: $contactInfoId) {
+      id
+    }
+  }
+`;

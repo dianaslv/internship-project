@@ -9,8 +9,8 @@ export function cleanErrorsForInputList(inputList) {
 export function validateInputList(inputList) {
   let validForm = true;
   let errors = [];
-  inputList.map((education, index) => {
-    for (const [key, value] of Object.entries(education)) {
+  inputList.map((input, index) => {
+    for (const [key, value] of Object.entries(input)) {
       console.log(`${key}: ${value}`);
       if (key !== "id" && key !== "error") {
         if (value === "") {

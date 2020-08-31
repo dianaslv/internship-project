@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
-import UserSkillsTable from "../NestedTables/UserSkillsTable";
 import UserSkillsModal from "../Modals/UserSkillsModal";
 import { useAppContext } from "../../../../Context/ContextProvider";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   AddUserSkill,
   DeleteUserSkill,
+  UpdateUserSkillRating,
 } from "../../../../Apollo/Queries/UserQueries/UserSkillsQueries";
 import { AddSkill } from "../../../../Apollo/Queries/SkillsQueries";
 import { GetUserSkillsDataForCV } from "../../../../Apollo/Queries/UserQueries/UserQueries";
+import CustomTable from "../../../../Commons/CommonComponents/CustomTable";
 
 export default function UserSkills(props) {
   const { user } = useAppContext();
   const [userSkills, setUserSkills] = useState([]);
-  const [addUserSkill, { data: addedUserSkill }] = useMutation(AddUserSkill);
-  const [addSkill, { data: addedSkill }] = useMutation(AddSkill);
+  const [addUserSkill] = useMutation(AddUserSkill);
+  const [addSkill] = useMutation(AddSkill);
   const [deleteUserSkill] = useMutation(DeleteUserSkill);
   const { data, loading } = useQuery(GetUserSkillsDataForCV, {
     variables: { id: user.id },
   });
+  const [index, setIndex] = useState(-1);
+  const [updateUserSkill] = useMutation(UpdateUserSkillRating);
 
   useEffect(() => {
     console.log(data);
@@ -39,7 +42,7 @@ export default function UserSkills(props) {
 
   if (loading) return null;
 
-  const handleUpdate = (value, name, skillPos) => {
+  const handleChange = (value, name, skillPos) => {
     console.log(value, name, skillPos);
     const updatedSkills = [...userSkills];
     userSkills[skillPos][name] = value;
@@ -93,6 +96,7 @@ export default function UserSkills(props) {
       }
     });
   };
+
   const handleRemove = (index) => {
     deleteUserSkill({
       variables: { id: userSkills[index].id },
@@ -106,14 +110,47 @@ export default function UserSkills(props) {
       ],
     }).then((r) => console.log(r));
   };
+
+  const startEditing = (i) => {
+    setIndex(i);
+    console.log("start editing", index);
+  };
+
+  const stopEditing = (i) => {
+    let updatedSkill = userSkills[i];
+    updateUserSkill({
+      variables: {
+        id: parseInt(updatedSkill.id),
+        rating: parseInt(updatedSkill.rating),
+      },
+    }).then((r) => {
+      console.log(r);
+      setIndex(-1);
+    });
+  };
+
   return (
     userSkills && (
       <>
-        <UserSkillsTable
-          userId={user.id}
-          userSkills={userSkills}
-          handleUpdate={handleUpdate}
+        <CustomTable
+          editIdx={index}
+          startEditing={startEditing}
+          stopEditing={stopEditing}
+          handleChange={handleChange}
           handleRemove={handleRemove}
+          data={userSkills}
+          header={[
+            {
+              name: "Skill Name",
+              prop: "skillName",
+              disableUpdate: true,
+            },
+            {
+              name: "Rating",
+              prop: "rating",
+            },
+          ]}
+          title="Skills table"
         />
         <UserSkillsModal userId={user.id} handleSubmit={handleSubmit} />
       </>

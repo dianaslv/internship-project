@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,9 +12,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import CheckIcon from "@material-ui/icons/Check";
 import TextField from "@material-ui/core/TextField";
 import moment from "moment";
-import CountrySelector from "./CountrySelector";
-import DateTimePickerComponent from "./DateTimePickerComponent";
 import Avatar from "@material-ui/core/Avatar";
+import Link from "@material-ui/core/Link";
+import getComponentForEditing from "./SpecialFormatComponentsForEditing";
 
 const useStyles = makeStyles({
   table: {
@@ -36,34 +36,17 @@ export default function CustomTable({
 }) {
   const classes = useStyles();
 
-  const components = {
-    CountrySelector: CountrySelector,
-    DateTimePickerComponent: DateTimePickerComponent,
-  };
-
-  const getComponentForEditing = (field, value, componentForEditingName, i) => {
-    console.log(
-      field,
-      value,
-      componentForEditingName,
-      components[componentForEditingName]
-    );
-    const MyComponent = components[componentForEditingName];
-    return (
-      <MyComponent
-        field={field}
-        value={value}
-        handleChange={handleChange}
-        i={i}
-      />
-    );
-  };
-
   const getDataForDisplayingForSpecialFormat = (format, name, field) => {
     if (format === "date") return moment.unix(field).format("DD/MM/YYYY");
     if (format === "jobAvailability")
       return field ? "Available" : "Not available";
     if (format === "photoUrl") return <Avatar alt="avatar" src={field} />;
+    if (format === "url")
+      return (
+        <Link href={"https://" + `${field}`} target="_blank" color="inherit">
+          {field}
+        </Link>
+      );
   };
 
   const newRow = (

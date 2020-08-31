@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
 import UserEducationsModal from "../Modals/UserEducationsModal";
-import UserEducationsTable from "../NestedTables/UserEducationsTable";
 import { useAppContext } from "../../../../Context/ContextProvider";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   AddUserEducation,
   DeleteUserEducation,
+  UpdateUserEducation,
 } from "../../../../Apollo/Queries/UserQueries/UserEducationsQueries";
 import { GetUserEducationsDataForCV } from "../../../../Apollo/Queries/UserQueries/UserQueries";
+import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents/DateFormatConverter";
+import CustomTable from "../../../../Commons/CommonComponents/CustomTable";
 
 export default function UserEducations(props) {
   const { user } = useAppContext();
   const [userEducations, setUserEducations] = useState([]);
-  const [addUserEducation, { data: addedUserEducation }] = useMutation(
-    AddUserEducation
-  );
+  const [addUserEducation] = useMutation(AddUserEducation);
   const [getDeletedUserEducation] = useMutation(DeleteUserEducation);
   const { data, loading } = useQuery(GetUserEducationsDataForCV, {
     variables: { id: user.id },
   });
+  const [index, setIndex] = useState(-1);
+  const [getUpdatedUserEducation] = useMutation(UpdateUserEducation);
 
   useEffect(() => {
     console.log(data);
@@ -40,7 +42,7 @@ export default function UserEducations(props) {
 
   if (loading) return null;
 
-  const handleUpdateUserEducations = (value, name, educationPos) => {
+  const handleChange = (value, name, educationPos) => {
     console.log(value, name);
     const updatedEducations = [...userEducations];
     userEducations[educationPos][name] = value;
@@ -70,7 +72,7 @@ export default function UserEducations(props) {
     });
   };
 
-  const handleDeleteUserEducations = (index) => {
+  const handleRemove = (index) => {
     getDeletedUserEducation({
       variables: { id: userEducations[index].id },
       refetchQueries: [
@@ -84,14 +86,66 @@ export default function UserEducations(props) {
     }).then((r) => console.log(r));
   };
 
+  const startEditing = (i) => {
+    setIndex(i);
+    console.log("start editing", index);
+  };
+
+  const stopEditing = (i) => {
+    let education = userEducations[i];
+    let educationStartDate = getDateFormatForUpdateMutation(
+      education.startDate
+    );
+    let educationEndDate = getDateFormatForUpdateMutation(education.endDate);
+
+    getUpdatedUserEducation({
+      variables: {
+        id: parseInt(education.id),
+        userId: user.id,
+        institution: education.institution,
+        description: education.description,
+        startDate: educationStartDate,
+        endDate: educationEndDate,
+      },
+    }).then((r) => {
+      console.log(r);
+      setIndex(-1);
+    });
+  };
+
   return (
     userEducations && (
       <>
-        <UserEducationsTable
-          userId={user.id}
-          userEducations={userEducations}
-          handleUpdateUserEducations={handleUpdateUserEducations}
-          handleDeleteUserEducations={handleDeleteUserEducations}
+        <CustomTable
+          editIdx={index}
+          startEditing={startEditing}
+          stopEditing={stopEditing}
+          handleChange={handleChange}
+          handleRemove={handleRemove}
+          data={userEducations}
+          header={[
+            {
+              name: "Description",
+              prop: "description",
+            },
+            {
+              name: "Institution",
+              prop: "institution",
+            },
+            {
+              name: "Start Date",
+              prop: "startDate",
+              componentForEditing: "DateTimePickerComponent",
+              specialFormatForDisplaying: "date",
+            },
+            {
+              name: "End Date",
+              prop: "endDate",
+              componentForEditing: "DateTimePickerComponent",
+              specialFormatForDisplaying: "date",
+            },
+          ]}
+          title="Educations table"
         />
         <UserEducationsModal
           userId={user.id}

@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import UserWorkExperiencesTable from "../NestedTables/UserWorkExperiencesTable";
 import UserWorkExperiencesModal from "../Modals/UserWorkExperiencesModal";
 import { useAppContext } from "../../../../Context/ContextProvider";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   AddUserWorkExperiences,
   DeleteUserWorkExperiences,
+  UpdateUserWorkExperiences,
 } from "../../../../Apollo/Queries/UserQueries/UserWorkExperiencesQueries";
 import { GetUserWorkExperiencesDataForCV } from "../../../../Apollo/Queries/UserQueries/UserQueries";
+import CustomTable from "../../../../Commons/CommonComponents/CustomTable";
+import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents/DateFormatConverter";
 
 export default function UserWorkExperiences(props) {
   const { user } = useAppContext();
@@ -22,6 +24,8 @@ export default function UserWorkExperiences(props) {
   const { data, loading } = useQuery(GetUserWorkExperiencesDataForCV, {
     variables: { id: user.id },
   });
+  const [index, setIndex] = useState(-1);
+  const [updateUserWorkExperience] = useMutation(UpdateUserWorkExperiences);
 
   useEffect(() => {
     console.log(data);
@@ -43,14 +47,42 @@ export default function UserWorkExperiences(props) {
 
   if (loading) return null;
 
-  const handleUpdateUserWorkExperiences = (value, name, workPos) => {
+  const startEditing = (i) => {
+    setIndex(i);
+  };
+
+  const stopEditing = (i) => {
+    let workExperience = userWorkExperiences[i];
+    let workExperienceStartDate = getDateFormatForUpdateMutation(
+      workExperience.startDate
+    );
+    let workExperienceEndDate = getDateFormatForUpdateMutation(
+      workExperience.endDate
+    );
+
+    updateUserWorkExperience({
+      variables: {
+        id: parseInt(workExperience.id),
+        userId: user.id,
+        institution: workExperience.institution,
+        description: workExperience.description,
+        startDate: workExperienceStartDate,
+        endDate: workExperienceEndDate,
+      },
+    }).then((r) => {
+      console.log(r);
+      setIndex(-1);
+    });
+  };
+
+  const handleChange = (value, name, workPos) => {
     console.log(value, name);
     const updatedWork = [...userWorkExperiences];
     updatedWork[workPos][name] = value;
     setUserWorkExperiences(updatedWork);
   };
 
-  const handleSubmitUserWorkExperiences = (workExperiences) => {
+  const handleSubmit = (workExperiences) => {
     workExperiences.map((work, key) => {
       addUserWorkExperience({
         variables: {
@@ -72,7 +104,7 @@ export default function UserWorkExperiences(props) {
     });
   };
 
-  const handleDeleteUserWorkExperiences = (index) => {
+  const handleRemove = (index) => {
     getDeletedUserWorkExperience({
       variables: { id: userWorkExperiences[index].id },
       refetchQueries: [
@@ -89,15 +121,40 @@ export default function UserWorkExperiences(props) {
   return (
     userWorkExperiences && (
       <>
-        <UserWorkExperiencesTable
-          userId={user.id}
-          userWorkExperiences={userWorkExperiences}
-          handleUpdateUserWorkExperiences={handleUpdateUserWorkExperiences}
-          handleDeleteUserWorkExperiences={handleDeleteUserWorkExperiences}
+        <CustomTable
+          editIdx={index}
+          startEditing={startEditing}
+          stopEditing={stopEditing}
+          handleChange={handleChange}
+          handleRemove={handleRemove}
+          data={userWorkExperiences}
+          header={[
+            {
+              name: "Description",
+              prop: "description",
+            },
+            {
+              name: "Institution",
+              prop: "institution",
+            },
+            {
+              name: "Start Date",
+              prop: "startDate",
+              componentForEditing: "DateTimePickerComponent",
+              specialFormatForDisplaying: "date",
+            },
+            {
+              name: "End Date",
+              prop: "endDate",
+              componentForEditing: "DateTimePickerComponent",
+              specialFormatForDisplaying: "date",
+            },
+          ]}
+          title="Work Experiences table"
         />
         <UserWorkExperiencesModal
           userId={user.id}
-          handleSubmit={handleSubmitUserWorkExperiences}
+          handleSubmit={handleSubmit}
         />
       </>
     )

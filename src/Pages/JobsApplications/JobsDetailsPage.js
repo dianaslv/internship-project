@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PageLayout from "../../Commons/PageLayout/PageLayout";
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client";
-import { GetJobById, Jobs } from "../../Apollo/Queries/JobQueries/JobQueries";
+import { useMutation, useQuery } from "@apollo/client";
+import { GetJobById } from "../../Apollo/Queries/JobQueries/JobQueries";
 import Typography from "@material-ui/core/Typography";
-import { Users } from "../../Apollo/Queries/UserQueries/UserQueries";
 import { useAppContext } from "../../Context/ContextProvider";
 import { AddUserJobApplication } from "../../Apollo/Queries/UserJobApplicationQueries/UserJobApplicationQueries";
 import Button from "@material-ui/core/Button";
@@ -39,7 +38,7 @@ export default function JobsDetailsPage(props) {
   const {
     match: { params },
   } = props;
-  const { user, updateUser } = useAppContext();
+  const { user } = useAppContext();
   const { data, loading } = useQuery(GetJobById, {
     variables: {
       id: parseInt(params.id),
@@ -48,10 +47,7 @@ export default function JobsDetailsPage(props) {
   const [open, setOpen] = React.useState(false);
   const classes = useStyles();
 
-  const [
-    addUserJobApplication,
-    { data: addedUserJobApplication },
-  ] = useMutation(AddUserJobApplication);
+  const [addUserJobApplication] = useMutation(AddUserJobApplication);
 
   if (data) console.log(data);
 
@@ -70,9 +66,7 @@ export default function JobsDetailsPage(props) {
   };
 
   const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
+    if (reason === "clickaway") return null;
     setOpen(false);
   };
 

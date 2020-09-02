@@ -1,47 +1,18 @@
 import CustomTable from "./CustomTable";
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 export default function ContactInfoTable({ data, handleUpdate }) {
-  const [index, setIndex] = useState(-1);
-  const [contactInfo, setContactInfo] = useState({});
-
-  useEffect(() => {
-    if (data) {
-      console.log(data);
-      setContactInfo({ ...data });
-    }
-  }, [data]);
-
-  const startEditing = (i) => {
-    setIndex(i);
-  };
-
-  const stopEditing = () => {
-    handleUpdate(contactInfo);
-    setIndex(-1);
-  };
-
-  const handleChange = (options) => {
-    const updatedContactInfo = { ...contactInfo };
-    updatedContactInfo[options.name] = options.value;
-    if (options.options) {
-      const selectedIndex = options.options.selectedIndex;
-      updatedContactInfo["countryId"] = options.options[
-        selectedIndex
-      ].getAttribute("data-key");
-    }
-    setContactInfo(updatedContactInfo);
-  };
+  function stopEditing(i, editedData) {
+    console.log(i, editedData);
+    handleUpdate(editedData);
+  }
 
   return (
     <>
-      {data && Object.keys(contactInfo).length !== 0 && (
+      {data && (
         <CustomTable
-          startEditing={startEditing}
           stopEditing={stopEditing}
-          handleChange={handleChange}
-          editIdx={index}
-          data={[contactInfo]}
+          data={[data]}
           disableDelete={true}
           header={[
             {
@@ -63,7 +34,7 @@ export default function ContactInfoTable({ data, handleUpdate }) {
             },
             {
               name: "Country Name",
-              prop: "countryName",
+              prop: "country.name",
               componentForEditing: "CountrySelector",
             },
             {

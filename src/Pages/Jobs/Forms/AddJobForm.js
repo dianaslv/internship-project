@@ -9,7 +9,7 @@ import GeneralInfoForm from "./GeneralInfoForm";
 import RequirementForm from "./RequirementsForm";
 import BenefitsForm from "./BenefitsForm";
 import { useMutation } from "@apollo/client";
-import { AddJob } from "../../../Apollo/Queries/JobQueries/JobQueries";
+import { AddJob, Jobs } from "../../../Apollo/Queries/JobQueries/JobQueries";
 import { AddJobRequirement } from "../../../Apollo/Queries/JobQueries/JobRequirementsQueries";
 import { AddJobBenefit } from "../../../Apollo/Queries/JobQueries/JobBenefitsQueries";
 import { AddJobSkill } from "../../../Apollo/Queries/JobQueries/JobSkillsQueries";
@@ -118,19 +118,11 @@ export default function AddJobForm(props) {
 
   const handleSubmitSkills = (skills) => {
     const updatedJob = { ...job };
-    console.log("before updated in skills", updatedJob, job);
     const skillsList = [];
     skills.map((skill, key) => {
       if (skill.id === -1) {
-        console.log("will add a new skill with value", skill.name);
         skillsList.push({ name: skill.name, rating: skill.rating });
       } else {
-        console.log(
-          "will add an existing skill with id",
-          skill.id,
-          " and with value",
-          skill.name
-        );
         skillsList.push({
           id: skill.id,
           name: skill.name,
@@ -138,13 +130,9 @@ export default function AddJobForm(props) {
         });
       }
     });
-
-    console.log(skillsList);
     updatedJob["skills"] = skillsList;
     setJob(updatedJob);
-    console.log("after updated in skills", updatedJob, job);
     handleNext();
-    console.log(activeStep, getSteps().length);
   };
 
   const getStepContent = (step) => {
@@ -162,7 +150,6 @@ export default function AddJobForm(props) {
 
   const handleSendData = (e) => {
     e.preventDefault();
-    console.log(job);
     addJob({
       variables: {
         name: job.name,
@@ -202,6 +189,7 @@ export default function AddJobForm(props) {
                 jobId: r.data.createJob.id,
                 rating: parseInt(skill.rating),
               },
+              refetchQueries: [{ query: Jobs }],
             });
           });
         } else {
@@ -211,6 +199,7 @@ export default function AddJobForm(props) {
               jobId: r.data.createJob.id,
               rating: parseInt(skill.rating),
             },
+            refetchQueries: [{ query: Jobs }],
           });
         }
       });

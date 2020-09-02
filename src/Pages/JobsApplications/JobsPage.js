@@ -7,7 +7,9 @@ import Button from "@material-ui/core/Button";
 import { useAppContext } from "../../Context/ContextProvider";
 
 export default function JobsPage(props) {
-  const { data: jobsData, loading: loadingJobs } = useQuery(Jobs);
+  const { data: jobsData, loading: loadingJobs } = useQuery(Jobs, {
+    fetchPolicy: "cache-and-network",
+  });
   const { user } = useAppContext();
 
   if (loadingJobs) return null;

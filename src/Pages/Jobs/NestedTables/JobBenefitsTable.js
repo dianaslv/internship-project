@@ -10,37 +10,16 @@ import BenefitsModal from "../Modals/BenefitsModal";
 import { GetJobBenefitsById } from "../../../Apollo/Queries/JobQueries/JobQueries";
 
 export default function JobBenefitsTable(props) {
-  const [index, setIndex] = useState(-1);
   const [getUpdatedJobBenefits, { data: updatedJobBenefits }] = useMutation(
     UpdateJobBenefit
   );
   const [deleteJobBenefits] = useMutation(DeleteJobBenefit);
-  const { data, loading } = useQuery(GetJobBenefitsById, {
-    variables: { id: props.jobId },
-  });
-  const [jobBenefits, setJobBenefits] = useState([]);
+
+  const { jobBenefits } = props;
   const [addJobBenefit] = useMutation(AddJobBenefit);
 
-  useEffect(() => {
-    if (data) {
-      let updatedJobBenefits = [];
-      data.job.jobBenefits.map((benefit, key) =>
-        updatedJobBenefits.push({ id: benefit.id, name: benefit.name })
-      );
-
-      setJobBenefits(updatedJobBenefits);
-      console.log(updatedJobBenefits, jobBenefits);
-    }
-  }, [data]);
-
-  if (loading) return null;
-
-  const startEditing = (i) => {
-    setIndex(i);
-    console.log("start editing", index);
-  };
-
-  const stopEditing = (i) => {
+  const stopEditing = (i, editedData) => {
+    console.log(editedData);
     let updatedBenefit = jobBenefits[i];
     console.log("submit", updatedBenefit.id, updatedBenefit.name, props.jobId);
     getUpdatedJobBenefits({
@@ -49,24 +28,7 @@ export default function JobBenefitsTable(props) {
         name: updatedBenefit.name,
         jobId: props.jobId,
       },
-    }).then((r) => {
-      console.log(r);
-      console.log(updatedJobBenefits, updatedBenefit);
-      setIndex(-1);
     });
-  };
-
-  const handleChange = (options) => {
-    console.log(options);
-    const updatedJobBenefits = [...jobBenefits];
-    console.log(
-      updatedJobBenefits,
-      updatedJobBenefits[options.index],
-      updatedJobBenefits[options.index][options.name]
-    );
-    updatedJobBenefits[options.index][options.name] = options.value;
-    console.log(updatedJobBenefits);
-    setJobBenefits(updatedJobBenefits);
   };
 
   const handleRemove = (i) => {
@@ -80,51 +42,49 @@ export default function JobBenefitsTable(props) {
           },
         },
       ],
-    }).then((r) => console.log(r));
+    });
   };
 
   const handleSubmit = (listOfBenefits) => {
     listOfBenefits.map((benefit, key) => {
-      if (benefit.name !== "")
-        addJobBenefit({
-          variables: {
-            name: benefit.name,
-            jobId: parseInt(props.jobId),
-          },
-          refetchQueries: [
-            {
-              query: GetJobBenefitsById,
-              variables: {
-                id: props.jobId,
-              },
+      addJobBenefit({
+        variables: {
+          name: benefit.name,
+          jobId: parseInt(props.jobId),
+        },
+        refetchQueries: [
+          {
+            query: GetJobBenefitsById,
+            variables: {
+              id: props.jobId,
             },
-          ],
-        }).then((r) => console.log(r));
+          },
+        ],
+      });
     });
   };
 
   return (
-    jobBenefits && (
-      <>
-        {jobBenefits.length > 0 && (
-          <CustomTable
-            startEditing={startEditing}
-            editIdx={index}
-            stopEditing={stopEditing}
-            handleChange={handleChange}
-            handleRemove={handleRemove}
-            data={jobBenefits}
-            header={[
-              {
-                name: "Name",
-                prop: "name",
-              },
-            ]}
-            title="Benefits table"
-          />
-        )}
-        <BenefitsModal jobId={props.jobId} handleSubmit={handleSubmit} />
-      </>
-    )
+    <>
+      {jobBenefits ? (
+        <>
+          {jobBenefits.length > 0 && (
+            <CustomTable
+              stopEditing={stopEditing}
+              handleRemove={handleRemove}
+              data={jobBenefits}
+              header={[
+                {
+                  name: "Name",
+                  prop: "name",
+                },
+              ]}
+              title="Benefits table"
+            />
+          )}
+          <BenefitsModal jobId={props.jobId} handleSubmit={handleSubmit} />
+        </>
+      ) : null}
+    </>
   );
 }

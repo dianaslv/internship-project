@@ -1,7 +1,6 @@
 import React from "react";
-import RegisterUserForm from "../../../Commons/CommonComponents/Forms/RegisterUserForm";
 import AddDataModal from "../../../Commons/CommonComponents/AddDataModal";
-import AddCompanyStepper from "../AddCompanyStepper";
+import AddCompanyStepper from "./AddCompanyStepper";
 
 export default function AddCompanyModal(props) {
   return (

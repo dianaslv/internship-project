@@ -57,17 +57,5 @@ export default function UserCv(props) {
 
   if (loading) return null;
 
-  /*
-  * <UserSkillsTable userId={props.userId} userSkills={userSkills} />
-      <UserEducationsTable
-        userId={props.userId}
-        userEducations={userEducations}
-      />
-      <UserWorkExperiencesTable
-        userId={props.userId}
-        userWorkExperiences={userWorkExperiences}
-      />
-      * */
-
   return <></>;
 }

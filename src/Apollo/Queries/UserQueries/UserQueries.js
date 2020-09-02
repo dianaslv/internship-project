@@ -8,9 +8,52 @@ export const Users = gql`
       password
       firstName
       lastName
+      userSkills {
+        id
+        rating
+        skill {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      contactInfo {
+        id
+        email
+        phone
+        city
+        country {
+          id
+          name
+        }
+        website
+        avatarUrl
+        about
+      }
       userRole {
         id
         name
+      }
+      userEducations {
+        id
+        institution
+        description
+        startDate
+        endDate
+        createdAt
+        updatedAt
+      }
+      userWorkExperiences {
+        id
+        institution
+        description
+        startDate
+        endDate
+        createdAt
+        updatedAt
       }
     }
   }
@@ -148,6 +191,16 @@ export const UpdateContactInfo = gql`
       countryId: $countryId
     ) {
       id
+      email
+      phone
+      city
+      website
+      avatarUrl
+      about
+      country {
+        id
+        name
+      }
     }
   }
 `;
@@ -216,15 +269,6 @@ export const GetUserContactInfo = gql`
       contactInfo {
         id
       }
-    }
-  }
-`;
-
-export const GetUsersUsernames = gql`
-  query GetUsersUsernames {
-    users {
-      id
-      username
     }
   }
 `;

@@ -7,79 +7,41 @@ import {
   DeleteUserWorkExperiences,
   UpdateUserWorkExperiences,
 } from "../../../../Apollo/Queries/UserQueries/UserWorkExperiencesQueries";
-import { GetUserWorkExperiencesDataForCV } from "../../../../Apollo/Queries/UserQueries/UserQueries";
+import {
+  GetUserWorkExperiencesDataForCV,
+  Users,
+} from "../../../../Apollo/Queries/UserQueries/UserQueries";
 import CustomTable from "../../../../Commons/CommonComponents/Tables/CustomTable";
 import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents/Date/DateFormatConverter";
 
-export default function UserWorkExperiences(props) {
-  const { user } = useAppContext();
-  const [userWorkExperiences, setUserWorkExperiences] = useState([]);
-  const [
-    addUserWorkExperience,
-    { data: addedUserWorkExperience },
-  ] = useMutation(AddUserWorkExperiences);
-
-  const [getDeletedUserWorkExperience] = useMutation(DeleteUserWorkExperiences);
-
-  const { data, loading } = useQuery(GetUserWorkExperiencesDataForCV, {
-    variables: { id: user.id },
-  });
-  const [index, setIndex] = useState(-1);
+export default function UserWorkExperiences({ userWorkExperiences, userId }) {
+  const [addUserWorkExperience] = useMutation(AddUserWorkExperiences);
+  const [deleteUserWorkExperience] = useMutation(DeleteUserWorkExperiences);
   const [updateUserWorkExperience] = useMutation(UpdateUserWorkExperiences);
 
-  useEffect(() => {
-    console.log(data);
-    if (data) {
-      let userWorks = [];
-      data.user.userWorkExperiences.map((work, key) => {
-        let newWork = {
-          id: work.id,
-          description: work.description,
-          endDate: work.endDate,
-          startDate: work.startDate,
-          institution: work.institution,
-        };
-        userWorks.push(newWork);
-      });
-      setUserWorkExperiences(userWorks);
-    }
-  }, [data]);
-
-  if (loading) return null;
-
-  const startEditing = (i) => {
-    setIndex(i);
-  };
-
-  const stopEditing = (i) => {
-    let workExperience = userWorkExperiences[i];
+  const stopEditing = (i, editedData) => {
     let workExperienceStartDate = getDateFormatForUpdateMutation(
-      workExperience.startDate
+      editedData.startDate
     );
     let workExperienceEndDate = getDateFormatForUpdateMutation(
-      workExperience.endDate
+      editedData.endDate
     );
 
     updateUserWorkExperience({
       variables: {
-        id: parseInt(workExperience.id),
-        userId: user.id,
-        institution: workExperience.institution,
-        description: workExperience.description,
+        id: editedData.id,
+        userId: userId,
+        institution: editedData.institution,
+        description: editedData.description,
         startDate: workExperienceStartDate,
         endDate: workExperienceEndDate,
       },
-    }).then((r) => {
-      console.log(r);
-      setIndex(-1);
+      refetchQueries: [
+        {
+          query: Users,
+        },
+      ],
     });
-  };
-
-  const handleChange = (value, name, workPos) => {
-    console.log(value, name);
-    const updatedWork = [...userWorkExperiences];
-    updatedWork[workPos][name] = value;
-    setUserWorkExperiences(updatedWork);
   };
 
   const handleSubmit = (workExperiences) => {
@@ -88,44 +50,35 @@ export default function UserWorkExperiences(props) {
         variables: {
           institution: work.institution,
           description: work.description,
-          userId: user.id,
+          userId: userId,
           startDate: work.startDate,
           endDate: work.endDate,
         },
         refetchQueries: [
           {
-            query: GetUserWorkExperiencesDataForCV,
-            variables: {
-              id: user.id,
-            },
+            query: Users,
           },
         ],
-      }).then((r) => console.log(r));
+      });
     });
   };
 
   const handleRemove = (index) => {
-    getDeletedUserWorkExperience({
+    deleteUserWorkExperience({
       variables: { id: userWorkExperiences[index].id },
       refetchQueries: [
         {
-          query: GetUserWorkExperiencesDataForCV,
-          variables: {
-            id: user.id,
-          },
+          query: Users,
         },
       ],
-    }).then((r) => console.log(r));
+    });
   };
 
   return (
     userWorkExperiences && (
       <>
         <CustomTable
-          editIdx={index}
-          startEditing={startEditing}
           stopEditing={stopEditing}
-          handleChange={handleChange}
           handleRemove={handleRemove}
           data={userWorkExperiences}
           header={[
@@ -152,10 +105,7 @@ export default function UserWorkExperiences(props) {
           ]}
           title="Work Experiences table"
         />
-        <UserWorkExperiencesModal
-          userId={user.id}
-          handleSubmit={handleSubmit}
-        />
+        <UserWorkExperiencesModal userId={userId} handleSubmit={handleSubmit} />
       </>
     )
   );

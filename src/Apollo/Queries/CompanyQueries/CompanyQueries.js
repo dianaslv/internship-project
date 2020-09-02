@@ -20,8 +20,23 @@ export const Companies = gql`
   query Companies {
     companies {
       id
+      name
+      user {
+        id
+        username
+      }
       contactInfo {
         id
+        email
+        phone
+        city
+        country {
+          id
+          name
+        }
+        website
+        avatarUrl
+        about
       }
     }
   }

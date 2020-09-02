@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -25,9 +25,6 @@ const useStyles = makeStyles({
 export default function CustomTable({
   header,
   handleRemove,
-  startEditing,
-  editIdx,
-  handleChange,
   stopEditing,
   disableUpdate,
   disableDelete,
@@ -35,6 +32,15 @@ export default function CustomTable({
   data,
 }) {
   const classes = useStyles();
+  const [editedData, setEditedData] = useState({});
+  const [index, setIndex] = useState(-1);
+
+  const startEditing = (i) => {
+    setIndex(i);
+    console.log("start editing", index, data[i]);
+    setEditedData({ ...data[i] });
+    console.log(editedData);
+  };
 
   const getDataForDisplayingForSpecialFormat = (format, name, field) => {
     if (format === "date") return moment.unix(field).format("DD/MM/YYYY");
@@ -49,17 +55,58 @@ export default function CustomTable({
       );
   };
 
-  const newRow = (
-    x,
-    i,
-    header,
-    handleRemove,
-    startEditing,
-    editIdx,
-    handleChange,
-    stopEditing
-  ) => {
-    const currentlyEditing = editIdx === i;
+  function handleChange(options) {
+    console.log(options, editedData);
+    const updatedEditedData = { ...editedData };
+    if (options.name === "countryName") {
+      let { country } = updatedEditedData;
+      console.log(country);
+      let updatedCountry = { ...country };
+      updatedCountry["name"] = options.value;
+      updatedEditedData["country"] = updatedCountry;
+    } else {
+      if (options.name === "userName") {
+        let { user } = updatedEditedData;
+        console.log(user);
+        let updatedCountry = { ...user };
+        updatedCountry["username"] = options.value;
+        updatedEditedData["user"] = updatedCountry;
+      } else {
+        updatedEditedData[options.name] = options.value;
+      }
+    }
+    if (options.options) {
+      const selectedIndex = options.options.selectedIndex;
+      const key = options.options[selectedIndex].getAttribute("data-key");
+      if (options.name === "countryName")
+        updatedEditedData["country"]["id"] = parseInt(key);
+      if (options.name === "userName")
+        updatedEditedData["user"]["id"] = parseInt(key);
+      console.log(selectedIndex, key);
+    }
+    console.log(updatedEditedData);
+    setEditedData(updatedEditedData);
+  }
+
+  function getFieldName(prop) {
+    console.log("getFieldName", prop.split("."));
+    return prop.split(".");
+  }
+
+  function getFieldValue(x, prop) {
+    let res = prop.split(".");
+    console.log("x", x, "prop", prop, prop.split("."));
+    let obj = { ...x };
+    for (let i = 0; i < res.length - 1; i++) {
+      obj = { ...obj[res[i]] };
+      console.log("obj", obj);
+    }
+    console.log("getFieldValue", obj[res[res.length - 1]]);
+    return obj[res[res.length - 1]];
+  }
+
+  const newRow = (x, i, header, handleRemove, stopEditing) => {
+    const currentlyEditing = index === i;
 
     return (
       <TableRow key={`tr-${i}`}>
@@ -72,25 +119,25 @@ export default function CustomTable({
                     case y.specialFormatForDisplaying !== undefined:
                       return getDataForDisplayingForSpecialFormat(
                         y.specialFormatForDisplaying,
-                        y.prop,
-                        x[y.prop]
+                        getFieldName(y.prop),
+                        getFieldValue(x, y.prop)
                       );
 
                     default:
-                      return x[y.prop];
+                      return getFieldValue(x, y.prop);
                   }
 
                 case currentlyEditing:
                   switch (true) {
                     case y && y.disableUpdate:
-                      return x[y.prop];
+                      return getFieldValue(x, y.prop);
 
                     case y &&
                       !y.disableUpdate &&
                       y.componentForEditing !== undefined:
                       return getComponentForEditing(
-                        y.prop,
-                        x[y.prop],
+                        getFieldName(y.prop),
+                        getFieldValue(x, y.prop),
                         y.componentForEditing,
                         i,
                         handleChange
@@ -99,16 +146,16 @@ export default function CustomTable({
                     case y && !y.disableUpdate:
                       return (
                         <TextField
-                          name={y.prop}
+                          name={getFieldName(y.prop)}
                           onChange={(e) => {
                             e.preventDefault();
                             handleChange({
                               value: e.target.value,
-                              name: y.prop,
+                              name: getFieldName(y.prop),
                               index: i,
                             });
                           }}
-                          value={x[y.prop]}
+                          value={getFieldValue(editedData, y.prop)}
                         />
                       );
 
@@ -127,7 +174,9 @@ export default function CustomTable({
                   <CheckIcon
                     onClick={(e) => {
                       e.preventDefault();
-                      stopEditing(i);
+                      setIndex(-1);
+                      console.log(editedData);
+                      stopEditing(i, editedData);
                     }}
                   />
                 );
@@ -173,16 +222,7 @@ export default function CustomTable({
           <TableBody>
             {data &&
               data.map((row, key) =>
-                newRow(
-                  row,
-                  key,
-                  header,
-                  handleRemove,
-                  startEditing,
-                  editIdx,
-                  handleChange,
-                  stopEditing
-                )
+                newRow(row, key, header, handleRemove, stopEditing)
               )}
           </TableBody>
         </Table>

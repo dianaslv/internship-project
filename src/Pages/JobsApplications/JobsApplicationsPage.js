@@ -59,9 +59,13 @@ export default function JobsApplicationsPage() {
       {
         <>
           {userJobApplication &&
-            userJobApplication.userJobApplications.map((jobApp) => {
-              return (
-                <>
+            userJobApplication.userJobApplications.map((jobApp) => (
+              <>
+                {jobApp &&
+                jobApp.user &&
+                jobApp.user.id &&
+                user &&
+                jobApp.user.id === user.id ? (
                   <Card className={classes.root} variant="outlined">
                     <CardContent>
                       {user.userRole.toString() === "company_user" ? (
@@ -102,14 +106,9 @@ export default function JobsApplicationsPage() {
                       )}
                     </CardContent>
                   </Card>
-                  <br />
-                  <br />
-                  <Divider />
-                  <br />
-                  <br />
-                </>
-              );
-            })}
+                ) : null}
+              </>
+            ))}
         </>
       }
     </PageLayout>

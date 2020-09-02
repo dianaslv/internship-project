@@ -1,71 +1,33 @@
 import React, { useEffect, useState } from "react";
 import UserEducationsModal from "../Modals/UserEducationsModal";
-import { useAppContext } from "../../../../Context/ContextProvider";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
   AddUserEducation,
   DeleteUserEducation,
   UpdateUserEducation,
 } from "../../../../Apollo/Queries/UserQueries/UserEducationsQueries";
-import { GetUserEducationsDataForCV } from "../../../../Apollo/Queries/UserQueries/UserQueries";
+import { Users } from "../../../../Apollo/Queries/UserQueries/UserQueries";
 import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents/Date/DateFormatConverter";
 import CustomTable from "../../../../Commons/CommonComponents/Tables/CustomTable";
 
-export default function UserEducations(props) {
-  const { user } = useAppContext();
-  const [userEducations, setUserEducations] = useState([]);
+export default function UserEducations({ userEducations, userId }) {
   const [addUserEducation] = useMutation(AddUserEducation);
-  const [getDeletedUserEducation] = useMutation(DeleteUserEducation);
-  const { data, loading } = useQuery(GetUserEducationsDataForCV, {
-    variables: { id: user.id },
-  });
-  const [index, setIndex] = useState(-1);
-  const [getUpdatedUserEducation] = useMutation(UpdateUserEducation);
-
-  useEffect(() => {
-    console.log(data);
-    if (data) {
-      let userEducation = [];
-      data.user.userEducations.map((education, key) => {
-        let newEducation = {
-          id: education.id,
-          description: education.description,
-          endDate: education.endDate,
-          startDate: education.startDate,
-          institution: education.institution,
-        };
-        userEducation.push(newEducation);
-      });
-      setUserEducations(userEducation);
-    }
-  }, [data]);
-
-  if (loading) return null;
-
-  const handleChange = (value, name, educationPos) => {
-    console.log(value, name);
-    const updatedEducations = [...userEducations];
-    userEducations[educationPos][name] = value;
-    setUserEducations(updatedEducations);
-  };
+  const [deleteUserEducation] = useMutation(DeleteUserEducation);
+  const [updateUserEducation] = useMutation(UpdateUserEducation);
 
   const handleSubmitUserEducations = (educations) => {
-    console.log(educations);
     educations.map((education, key) => {
       addUserEducation({
         variables: {
           institution: education.institution,
           description: education.description,
-          userId: user.id,
+          userId: userId,
           startDate: education.startDate,
           endDate: education.endDate,
         },
         refetchQueries: [
           {
-            query: GetUserEducationsDataForCV,
-            variables: {
-              id: user.id,
-            },
+            query: Users,
           },
         ],
       }).then((r) => console.log(r));
@@ -73,43 +35,37 @@ export default function UserEducations(props) {
   };
 
   const handleRemove = (index) => {
-    getDeletedUserEducation({
+    deleteUserEducation({
       variables: { id: userEducations[index].id },
       refetchQueries: [
         {
-          query: GetUserEducationsDataForCV,
-          variables: {
-            id: user.id,
-          },
+          query: Users,
         },
       ],
     }).then((r) => console.log(r));
   };
 
-  const startEditing = (i) => {
-    setIndex(i);
-    console.log("start editing", index);
-  };
-
-  const stopEditing = (i) => {
-    let education = userEducations[i];
+  const stopEditing = (i, editedData) => {
+    console.log(editedData);
     let educationStartDate = getDateFormatForUpdateMutation(
-      education.startDate
+      editedData.startDate
     );
-    let educationEndDate = getDateFormatForUpdateMutation(education.endDate);
+    let educationEndDate = getDateFormatForUpdateMutation(editedData.endDate);
 
-    getUpdatedUserEducation({
+    updateUserEducation({
       variables: {
-        id: parseInt(education.id),
-        userId: user.id,
-        institution: education.institution,
-        description: education.description,
+        id: editedData.id,
+        userId: userId,
+        institution: editedData.institution,
+        description: editedData.description,
         startDate: educationStartDate,
         endDate: educationEndDate,
       },
-    }).then((r) => {
-      console.log(r);
-      setIndex(-1);
+      refetchQueries: [
+        {
+          query: Users,
+        },
+      ],
     });
   };
 
@@ -117,10 +73,7 @@ export default function UserEducations(props) {
     userEducations && (
       <>
         <CustomTable
-          editIdx={index}
-          startEditing={startEditing}
           stopEditing={stopEditing}
-          handleChange={handleChange}
           handleRemove={handleRemove}
           data={userEducations}
           header={[
@@ -148,7 +101,7 @@ export default function UserEducations(props) {
           title="Educations table"
         />
         <UserEducationsModal
-          userId={user.id}
+          userId={userId}
           handleSubmit={handleSubmitUserEducations}
         />
       </>

@@ -4,12 +4,12 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import JobGeneralInfoTable from "./NestedTables/JobGeneralInfoTable";
 import JobRequirementsTable from "./NestedTables/JobRequirementsTable";
 import JobBenefitsTable from "./NestedTables/JobBenefitsTable";
-import JobSkillsTable from "./NestedTables/JobSkillsTable";
-import { Jobs } from "../../Apollo/Queries/JobQueries/JobQueries";
+import { Jobs, JobsIds } from "../../Apollo/Queries/JobQueries/JobQueries";
 import AddJobModal from "./Modals/AddJobModal";
+import JobGeneralInfoTable from "./NestedTables/JobGeneralInfoTable";
+import JobSkillsTable from "./NestedTables/JobSkillsTable";
 
 const useStyles = makeStyles({
   root: {
@@ -30,7 +30,10 @@ const useStyles = makeStyles({
 });
 
 export default function CompanyJobsTable() {
-  const { data, loading } = useQuery(Jobs);
+  const { data, loading } = useQuery(Jobs, {
+    fetchPolicy: "cache-and-network",
+  });
+
   const classes = useStyles();
 
   if (loading) return null;
@@ -45,10 +48,22 @@ export default function CompanyJobsTable() {
               <Typography variant="h5" component="h2">
                 Job No. {key}
               </Typography>
-              <JobGeneralInfoTable jobId={job.id} />
-              <JobRequirementsTable jobId={job.id} />
-              <JobBenefitsTable jobId={job.id} />
-              <JobSkillsTable jobId={job.id} />
+              {job && <JobGeneralInfoTable jobGeneralInfo={job} />}
+              {job.jobRequirements && (
+                <JobRequirementsTable
+                  jobId={job.id}
+                  jobRequirements={job.jobRequirements}
+                />
+              )}
+              {job.jobBenefits && (
+                <JobBenefitsTable
+                  jobId={job.id}
+                  jobBenefits={job.jobBenefits}
+                />
+              )}
+              {job.jobSkills && (
+                <JobSkillsTable jobId={job.id} jobSkills={job.jobSkills} />
+              )}
             </CardContent>
           </Card>
 

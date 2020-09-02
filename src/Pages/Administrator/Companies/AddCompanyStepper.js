@@ -6,10 +6,10 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { useMutation } from "@apollo/client";
-import ContactInfoForm from "../ProfilePage/Profile/ContactInfoForm";
-import { AddCompany } from "../../Apollo/Queries/CompanyQueries/CompanyQueries";
-import CompanyGeneralInfoForm from "./Forms/CompanyGeneralInfoForm";
-import { AddContactInfo } from "../../Apollo/Queries/UserQueries/UserQueries";
+import ContactInfoForm from "../../ProfilePage/Profile/ContactInfoForm";
+import { AddCompany } from "../../../Apollo/Queries/CompanyQueries/CompanyQueries";
+import CompanyGeneralInfoForm from "./CompanyGeneralInfoForm";
+import { AddContactInfo } from "../../../Apollo/Queries/UserQueries/UserQueries";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,26 +54,13 @@ export default function AddCompanyStepper(props) {
     return ["Add General Info", "Add Contact Info"];
   };
 
-  const handleSubmitGeneralInfo = (company) => {
-    let updatedCompany = {};
-    updatedCompany["name"] = company.name;
-    updatedCompany["userId"] = company.userId;
-    updatedCompany["userName"] = company.userName;
-    setCompany(updatedCompany);
-    handleNext();
-  };
-
-  const handleSubmitContactInfo = (contactInfo) => {
-    console.log(contactInfo);
+  const handleSubmit = (companyData) => {
     let updatedCompany = { ...company };
-    updatedCompany.about = contactInfo.about;
-    updatedCompany.avatarUrl = contactInfo.avatarUrl;
-    updatedCompany.city = contactInfo.city;
-    updatedCompany.countryId = contactInfo.countryId;
-    updatedCompany.countryName = contactInfo.countryName;
-    updatedCompany.email = contactInfo.email;
-    updatedCompany.phone = contactInfo.phone;
-    updatedCompany.website = contactInfo.website;
+    for (const [key, value] of Object.entries(companyData)) {
+      console.log(`${key}: ${value}`);
+      updatedCompany[key] = value;
+    }
+    console.log(updatedCompany);
     setCompany(updatedCompany);
     handleNext();
   };
@@ -81,18 +68,10 @@ export default function AddCompanyStepper(props) {
   const getStepContent = (step) => {
     switch (step) {
       case 0:
-        return (
-          <CompanyGeneralInfoForm handleSubmit={handleSubmitGeneralInfo} />
-        );
+        return <CompanyGeneralInfoForm handleSubmit={handleSubmit} />;
       case 1:
-        return <ContactInfoForm handleSubmit={handleSubmitContactInfo} />;
+        return <ContactInfoForm handleSubmit={handleSubmit} />;
     }
-  };
-
-  const handleSendData = (e) => {
-    e.preventDefault();
-    console.log(company);
-    props.handleSubmit(company);
   };
 
   return (
@@ -120,7 +99,7 @@ export default function AddCompanyStepper(props) {
         {getStepContent(activeStep)}
       </Typography>
       {activeStep === getSteps().length ? (
-        <Button onClick={handleSendData}>Finish</Button>
+        <Button onClick={(e) => props.handleSubmit(company)}>Finish</Button>
       ) : null}
     </>
   );

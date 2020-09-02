@@ -4,46 +4,26 @@ import React, { useState } from "react";
 import { UpdateUser } from "../../../Apollo/Queries/UserQueries/UserQueries";
 import { useMutation } from "@apollo/client";
 
-export default function UserDataTable() {
-  const { user } = useAppContext();
-  const [userData, updateUserData] = useState(user);
-  const [index, setIndex] = useState(-1);
-  const [getUpdatedUser] = useMutation(UpdateUser);
+export default function UserDataTable({ data }) {
+  const [updateUser] = useMutation(UpdateUser);
 
-  const startEditing = (i) => {
-    setIndex(i);
-  };
-
-  const stopEditing = () => {
-    const updatedUser = { ...userData };
-    getUpdatedUser({
+  const stopEditing = (i, editedData) => {
+    updateUser({
       variables: {
-        id: updatedUser.id,
-        username: updatedUser.username,
-        password: updatedUser.password,
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
+        id: editedData.id,
+        username: editedData.username,
+        password: editedData.password,
+        firstName: editedData.firstName,
+        lastName: editedData.lastName,
       },
-    }).then((r) => {
-      console.log(r);
-      setIndex(-1);
     });
   };
 
-  const handleChange = (options) => {
-    const updatedUser = { ...userData };
-    updatedUser[options.name] = options.value;
-    updateUserData(updatedUser);
-  };
-
-  return user.id ? (
+  return data ? (
     <>
       <CustomTable
-        startEditing={startEditing}
-        editIdx={index}
         stopEditing={stopEditing}
-        handleChange={handleChange}
-        data={[userData]}
+        data={[data]}
         disableDelete={true}
         header={[
           {

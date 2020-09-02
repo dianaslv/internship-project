@@ -1,19 +1,18 @@
 import React from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { AddContactInfo } from "../../Apollo/Queries/UserQueries/UserQueries";
+import { AddContactInfo } from "../../../Apollo/Queries/UserQueries/UserQueries";
 import {
   AddCompany,
   Companies,
   DeleteCompany,
-} from "../../Apollo/Queries/CompanyQueries/CompanyQueries";
+} from "../../../Apollo/Queries/CompanyQueries/CompanyQueries";
 import CompanyGeneralInfoTable from "./CompanyGeneralInfoTable";
 import CompanyContactInfo from "./CompanyContactInfo";
-import AddCompanyModal from "./Modals/AddCompanyModal";
+import AddCompanyModal from "./AddCompanyModal";
 
 export default function CompaniesTable() {
   const [addCompany] = useMutation(AddCompany);
   const { data: companiesData, loading } = useQuery(Companies);
-  const [deleteCompany] = useMutation(DeleteCompany);
   const [addContactInfo] = useMutation(AddContactInfo);
   console.log(companiesData);
 
@@ -46,34 +45,14 @@ export default function CompaniesTable() {
     });
   };
 
-  const handleRemove = (companyId) => {
-    deleteCompany({
-      variables: {
-        id: companyId,
-      },
-      refetchQueries: [
-        {
-          query: Companies,
-        },
-      ],
-    });
-  };
-
   return companiesData && companiesData.companies ? (
     <>
       <AddCompanyModal handleSubmit={handleSubmit} />
       {companiesData.companies.map((company, key) => {
         return (
           <>
-            <CompanyGeneralInfoTable
-              handleRemove={handleRemove}
-              companyId={company.id}
-              position={key}
-            />
-            <CompanyContactInfo
-              contactInfoId={company.contactInfo.id}
-              position={key}
-            />
+            <CompanyGeneralInfoTable company={company} />
+            <CompanyContactInfo contactInfo={company.contactInfo} />
           </>
         );
       })}

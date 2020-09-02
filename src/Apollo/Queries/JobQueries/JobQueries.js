@@ -18,15 +18,32 @@ export const Jobs = gql`
           id
           name
         }
+        job {
+          id
+        }
       }
       jobBenefits {
         id
         name
+        job {
+          id
+        }
       }
       jobRequirements {
         id
         name
+        job {
+          id
+        }
       }
+    }
+  }
+`;
+
+export const JobsIds = gql`
+  query jobs {
+    jobs {
+      id
     }
   }
 `;

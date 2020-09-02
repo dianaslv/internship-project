@@ -6,7 +6,10 @@ export default function AddJobModal(props) {
   return (
     <div>
       <AddDataModal buttonText="Add Job">
-        <AddJobForm companyId={props.companyId} />
+        <AddJobForm
+          companyId={props.companyId}
+          handleSubmit={props.handleSubmit}
+        />
       </AddDataModal>
     </div>
   );

@@ -8,7 +8,7 @@ export default function LandingPage() {
 
   return (
     <PageLayout title="Landing page" userType={user.userRole}>
-      <JobsPage></JobsPage>
+      <JobsPage />
     </PageLayout>
   );
 }

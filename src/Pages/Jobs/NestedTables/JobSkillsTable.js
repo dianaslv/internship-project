@@ -10,61 +10,19 @@ import JobSkillsModal from "../Modals/JobSkillsModal";
 import { GetJobSkillsById } from "../../../Apollo/Queries/JobQueries/JobQueries";
 import { AddSkill } from "../../../Apollo/Queries/SkillsQueries";
 
-export default function JobSkillsTable(props) {
-  const [index, setIndex] = useState(-1);
+export default function JobSkillsTable({ jobId, jobSkills }) {
   const [deleteJobSkill] = useMutation(DeleteJobSkill);
   const [getUpdatedJobSkillRating] = useMutation(UpdateJobSkillRating);
-  const { data, loading } = useQuery(GetJobSkillsById, {
-    variables: { id: props.jobId },
-  });
-  const [jobSkills, setJobSkills] = useState([]);
-
   const [addJobSkill, { data: addedJobSkill }] = useMutation(AddJobSkill);
   const [addSkill] = useMutation(AddSkill);
 
-  useEffect(() => {
-    if (data) {
-      let updatedJobSkills = [];
-      data.job.jobSkills.map((jobSkill, key) =>
-        updatedJobSkills.push({
-          id: jobSkill.id,
-          rating: jobSkill.rating,
-          skillId: jobSkill.skill.id,
-          skillName: jobSkill.skill.name,
-        })
-      );
-      setJobSkills(updatedJobSkills);
-      console.log(updatedJobSkills, jobSkills);
-    }
-  }, [data]);
-
-  if (loading) return null;
-
-  const startEditing = (i) => {
-    setIndex(i);
-    console.log("start editing", index);
-  };
-
-  const stopEditing = (i) => {
-    let updatedSkill = jobSkills[i];
-    console.log("submit", updatedSkill.id, updatedSkill.name, props.jobId);
-    setIndex(-1);
-
+  const stopEditing = (i, editData) => {
     getUpdatedJobSkillRating({
       variables: {
-        id: parseInt(updatedSkill.id),
-        rating: parseInt(updatedSkill.rating),
+        id: parseInt(editData.id),
+        rating: parseInt(editData.rating),
       },
-    }).then((r) => {
-      console.log(r);
-      setIndex(-1);
     });
-  };
-
-  const handleChange = (options) => {
-    const updatedJobSkills = [...jobSkills];
-    updatedJobSkills[options.index][options.name] = options.value;
-    setJobSkills(updatedJobSkills);
   };
 
   const handleRemove = (i) => {
@@ -74,7 +32,7 @@ export default function JobSkillsTable(props) {
         {
           query: GetJobSkillsById,
           variables: {
-            id: props.jobId,
+            id: jobId,
           },
         },
       ],
@@ -93,36 +51,34 @@ export default function JobSkillsTable(props) {
           addJobSkill({
             variables: {
               skillId: parseInt(r.data.createSkill.id),
-              jobId: parseInt(props.jobId),
+              jobId: parseInt(jobId),
               rating: parseInt(skill.rating),
             },
             refetchQueries: [
               {
                 query: GetJobSkillsById,
                 variables: {
-                  id: props.jobId,
+                  id: jobId,
                 },
               },
             ],
-          }).then((r) => console.log(r));
+          });
         });
       } else {
         addJobSkill({
           variables: {
             skillId: parseInt(skill.id),
-            jobId: parseInt(props.jobId),
+            jobId: parseInt(jobId),
             rating: parseInt(skill.rating),
           },
           refetchQueries: [
             {
               query: GetJobSkillsById,
               variables: {
-                id: props.jobId,
+                id: jobId,
               },
             },
           ],
-        }).then((r) => {
-          console.log(addedJobSkill);
         });
       }
     });
@@ -133,10 +89,7 @@ export default function JobSkillsTable(props) {
       <>
         {jobSkills.length > 0 && (
           <CustomTable
-            startEditing={startEditing}
-            editIdx={index}
             stopEditing={stopEditing}
-            handleChange={handleChange}
             handleRemove={handleRemove}
             data={jobSkills}
             header={[
@@ -146,14 +99,14 @@ export default function JobSkillsTable(props) {
               },
               {
                 name: "Skill Name",
-                prop: "skillName",
+                prop: "skill.name",
                 disableUpdate: true,
               },
             ]}
             title="Skills table"
           />
         )}
-        <JobSkillsModal jobId={props.jobId} handleSubmit={handleSubmit} />
+        <JobSkillsModal jobId={jobId} handleSubmit={handleSubmit} />
       </>
     )
   );

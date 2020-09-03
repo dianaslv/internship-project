@@ -1,6 +1,5 @@
-import { useAppContext } from "../../../Context/ContextProvider";
 import CustomTable from "../../../Commons/CommonComponents/Tables/CustomTable";
-import React, { useState } from "react";
+import React from "react";
 import { UpdateUser } from "../../../Apollo/Queries/UserQueries/UserQueries";
 import { useMutation } from "@apollo/client";
 
@@ -41,6 +40,8 @@ export default function UserDataTable({ data }) {
           {
             name: "Password",
             prop: "password",
+            specialFormatForDisplaying: "password",
+            componentForEditing: "PasswordTextField",
           },
         ]}
         title="User Account Info"

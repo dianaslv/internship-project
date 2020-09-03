@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import UserSkillsModal from "../Modals/UserSkillsModal";
-import { useAppContext } from "../../../../Context/ContextProvider";
 import { useMutation, useQuery } from "@apollo/client";
 import {
   AddUserSkill,
@@ -8,10 +7,7 @@ import {
   UpdateUserSkillRating,
 } from "../../../../Apollo/Queries/UserQueries/UserSkillsQueries";
 import { AddSkill } from "../../../../Apollo/Queries/SkillsQueries";
-import {
-  GetUserSkillsDataForCV,
-  Users,
-} from "../../../../Apollo/Queries/UserQueries/UserQueries";
+import { Users } from "../../../../Apollo/Queries/UserQueries/UserQueries";
 import CustomTable from "../../../../Commons/CommonComponents/Tables/CustomTable";
 
 export default function UserSkills({ userSkills, userId }) {

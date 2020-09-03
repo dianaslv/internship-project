@@ -1,15 +1,12 @@
 import React from "react";
 import AddDataModal from "../../../Commons/CommonComponents/AddDataModal";
-import RequirementsForm from "../Forms/RequirementsForm";
+import NameInput from "../../../Commons/CommonComponents/Forms/NameInput";
 
 export default function RequirementsModal(props) {
   return (
     <div>
       <AddDataModal buttonText="Add Job Requirement">
-        <RequirementsForm
-          handleSubmit={props.handleSubmit}
-          jobId={props.jobId}
-        />
+        <NameInput handleSubmit={props.handleSubmit} />
       </AddDataModal>
     </div>
   );

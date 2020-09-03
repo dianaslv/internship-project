@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CustomTable from "../../../Commons/CommonComponents/Tables/CustomTable";
 import { useMutation, useQuery } from "@apollo/client";
 import {
@@ -85,10 +85,6 @@ export default function UsersTable() {
           {
             name: "Username",
             prop: "username",
-          },
-          {
-            name: "Password",
-            prop: "password",
           },
         ]}
         title="Users table"

@@ -29,10 +29,55 @@ export const UserJobApplication = gql`
           user {
             id
           }
+          contactInfo {
+            id
+            avatarUrl
+          }
         }
       }
       user {
         id
+        firstName
+        lastName
+        userSkills {
+          id
+          rating
+          skill {
+            id
+            name
+          }
+        }
+        contactInfo {
+          id
+          email
+          phone
+          city
+          country {
+            id
+            name
+          }
+          website
+          avatarUrl
+          about
+        }
+        userRole {
+          id
+          name
+        }
+        userEducations {
+          id
+          institution
+          description
+          startDate
+          endDate
+        }
+        userWorkExperiences {
+          id
+          institution
+          description
+          startDate
+          endDate
+        }
       }
       isAccepted
     }

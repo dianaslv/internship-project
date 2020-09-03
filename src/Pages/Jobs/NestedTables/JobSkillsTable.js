@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CustomTable from "../../../Commons/CommonComponents/Tables/CustomTable";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
   AddJobSkill,
   DeleteJobSkill,
   UpdateJobSkillRating,
 } from "../../../Apollo/Queries/JobQueries/JobSkillsQueries";
 import JobSkillsModal from "../Modals/JobSkillsModal";
-import { GetJobSkillsById } from "../../../Apollo/Queries/JobQueries/JobQueries";
+import { Jobs } from "../../../Apollo/Queries/JobQueries/JobQueries";
 import { AddSkill } from "../../../Apollo/Queries/SkillsQueries";
 
 export default function JobSkillsTable({ jobId, jobSkills }) {
   const [deleteJobSkill] = useMutation(DeleteJobSkill);
-  const [getUpdatedJobSkillRating] = useMutation(UpdateJobSkillRating);
-  const [addJobSkill, { data: addedJobSkill }] = useMutation(AddJobSkill);
+  const [updateJobSkill] = useMutation(UpdateJobSkillRating);
+  const [addJobSkill] = useMutation(AddJobSkill);
   const [addSkill] = useMutation(AddSkill);
 
   const stopEditing = (i, editData) => {
-    getUpdatedJobSkillRating({
+    updateJobSkill({
       variables: {
         id: parseInt(editData.id),
         rating: parseInt(editData.rating),
@@ -30,10 +30,7 @@ export default function JobSkillsTable({ jobId, jobSkills }) {
       variables: { id: jobSkills[i].id },
       refetchQueries: [
         {
-          query: GetJobSkillsById,
-          variables: {
-            id: jobId,
-          },
+          query: Jobs,
         },
       ],
     }).then((r) => console.log(r));
@@ -47,7 +44,6 @@ export default function JobSkillsTable({ jobId, jobSkills }) {
             name: skill.name,
           },
         }).then((r) => {
-          console.log(r.data.createSkill.id);
           addJobSkill({
             variables: {
               skillId: parseInt(r.data.createSkill.id),
@@ -56,10 +52,7 @@ export default function JobSkillsTable({ jobId, jobSkills }) {
             },
             refetchQueries: [
               {
-                query: GetJobSkillsById,
-                variables: {
-                  id: jobId,
-                },
+                query: Jobs,
               },
             ],
           });
@@ -73,10 +66,7 @@ export default function JobSkillsTable({ jobId, jobSkills }) {
           },
           refetchQueries: [
             {
-              query: GetJobSkillsById,
-              variables: {
-                id: jobId,
-              },
+              query: Jobs,
             },
           ],
         });
@@ -85,29 +75,27 @@ export default function JobSkillsTable({ jobId, jobSkills }) {
   };
 
   return (
-    jobSkills && (
-      <>
-        {jobSkills.length > 0 && (
-          <CustomTable
-            stopEditing={stopEditing}
-            handleRemove={handleRemove}
-            data={jobSkills}
-            header={[
-              {
-                name: "Rating",
-                prop: "rating",
-              },
-              {
-                name: "Skill Name",
-                prop: "skill.name",
-                disableUpdate: true,
-              },
-            ]}
-            title="Skills table"
-          />
-        )}
-        <JobSkillsModal jobId={jobId} handleSubmit={handleSubmit} />
-      </>
-    )
+    <>
+      {jobSkills ? (
+        <CustomTable
+          stopEditing={stopEditing}
+          handleRemove={handleRemove}
+          data={jobSkills}
+          header={[
+            {
+              name: "Rating",
+              prop: "rating",
+            },
+            {
+              name: "Skill Name",
+              prop: "skill.name",
+              disableUpdate: true,
+            },
+          ]}
+          title="Skills table"
+        />
+      ) : null}
+      <JobSkillsModal jobId={jobId} handleSubmit={handleSubmit} />
+    </>
   );
 }

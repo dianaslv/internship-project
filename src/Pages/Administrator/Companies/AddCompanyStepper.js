@@ -5,11 +5,8 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { useMutation } from "@apollo/client";
 import ContactInfoForm from "../../ProfilePage/Profile/ContactInfoForm";
-import { AddCompany } from "../../../Apollo/Queries/CompanyQueries/CompanyQueries";
 import CompanyGeneralInfoForm from "./CompanyGeneralInfoForm";
-import { AddContactInfo } from "../../../Apollo/Queries/UserQueries/UserQueries";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -14,7 +14,7 @@ import JobSkillsTable from "./NestedTables/JobSkillsTable";
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
-    backgroundColor: "pink",
+    backgroundColor: "#EDEDED",
   },
   bullet: {
     display: "inline-block",
@@ -64,7 +64,6 @@ export default function CompanyJobsTable() {
               )}
             </CardContent>
           </Card>
-
           <br />
           <br />
           <br />

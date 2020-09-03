@@ -82,12 +82,6 @@ export default function JobsDetailsPage(props) {
         userJobApplications.userJobApplications.map((userJobApp) => {
           if (userJobApp.job && userJobApp.user) {
             if (userJobApp.job.id === jobId && userJobApp.user.id === user.id) {
-              console.log(
-                userJobApp.job.id,
-                jobId,
-                userJobApp.user.id,
-                user.id
-              );
               founded = true;
               return false;
             }
@@ -119,42 +113,41 @@ export default function JobsDetailsPage(props) {
               <Typography variant="body2" component="p">
                 {data.job.description}
               </Typography>
+
+              {data.job &&
+                data.job.jobBenefits &&
+                data.job.jobBenefits.map((jobBenefit) => {
+                  return (
+                    <Typography variant="body2" component="p">
+                      {jobBenefit.name}
+                    </Typography>
+                  );
+                })}
+              <br />
+              <br />
+              <br />
+              {data.job &&
+                data.job.jobRequirements &&
+                data.job.jobRequirements.map((jobRequirement) => {
+                  return (
+                    <Typography variant="body2" component="p">
+                      {jobRequirement.name}
+                    </Typography>
+                  );
+                })}
+              <br />
+              <br />
+              <br />
+              {data.job &&
+                data.job.jobSkills &&
+                data.job.jobSkills.map((jobSkill) => {
+                  return (
+                    <Typography variant="body2" component="p">
+                      {jobSkill.skill.name}
+                    </Typography>
+                  );
+                })}
             </CardContent>
-
-            {data.job &&
-              data.job.jobBenefits &&
-              data.job.jobBenefits.map((jobBenefit) => {
-                return (
-                  <Typography variant="body2" component="p">
-                    {jobBenefit.name}
-                  </Typography>
-                );
-              })}
-            <br />
-            <br />
-            <br />
-            {data.job &&
-              data.job.jobRequirements &&
-              data.job.jobRequirements.map((jobRequirement) => {
-                return (
-                  <Typography variant="body2" component="p">
-                    {jobRequirement.name}
-                  </Typography>
-                );
-              })}
-            <br />
-            <br />
-            <br />
-            {data.job &&
-              data.job.jobSkills &&
-              data.job.jobSkills.map((jobSkill) => {
-                return (
-                  <Typography variant="body2" component="p">
-                    {jobSkill.skill.name}
-                  </Typography>
-                );
-              })}
-
             <CardActions>
               {userAppliedToJob(data.job.id) && (
                 <Button>Already applied to job</Button>

@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import UserWorkExperiencesModal from "../Modals/UserWorkExperiencesModal";
-import { useAppContext } from "../../../../Context/ContextProvider";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
   AddUserWorkExperiences,
   DeleteUserWorkExperiences,
   UpdateUserWorkExperiences,
 } from "../../../../Apollo/Queries/UserQueries/UserWorkExperiencesQueries";
-import {
-  GetUserWorkExperiencesDataForCV,
-  Users,
-} from "../../../../Apollo/Queries/UserQueries/UserQueries";
+import { Users } from "../../../../Apollo/Queries/UserQueries/UserQueries";
 import CustomTable from "../../../../Commons/CommonComponents/Tables/CustomTable";
 import getDateFormatForUpdateMutation from "../../../../Commons/CommonComponents/Date/DateFormatConverter";
 

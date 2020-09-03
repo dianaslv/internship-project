@@ -14,6 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import moment from "moment";
 import Avatar from "@material-ui/core/Avatar";
 import Link from "@material-ui/core/Link";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import getComponentForEditing from "../SpecialFormatComponentsForEditing";
 
 const useStyles = makeStyles({
@@ -43,6 +44,7 @@ export default function CustomTable({
   };
 
   const getDataForDisplayingForSpecialFormat = (format, name, field) => {
+    if (format === "password") return <VisibilityOffIcon />;
     if (format === "date") return moment.unix(field).format("DD/MM/YYYY");
     if (format === "jobAvailability")
       return field ? "Available" : "Not available";
@@ -72,7 +74,12 @@ export default function CustomTable({
         updatedCountry["username"] = options.value;
         updatedEditedData["user"] = updatedCountry;
       } else {
-        updatedEditedData[options.name] = options.value;
+        if (options.name === "availability") {
+          updatedEditedData["isAvailable"] = options.value;
+          console.log(updatedEditedData);
+        } else {
+          updatedEditedData[options.name] = options.value;
+        }
       }
     }
     if (options.options) {

@@ -1,5 +1,8 @@
 import React from "react";
 import { useState } from "react";
+import { TextFields } from "@material-ui/icons";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
 
 export default function GeneralInfoForm(props) {
   const [job, setJob] = useState({
@@ -23,15 +26,20 @@ export default function GeneralInfoForm(props) {
   return (
     <form onSubmit={handleSubmit}>
       <label>Job Name</label>
-      <input name="name" type="text" value={job.name} onChange={handleChange} />
+      <TextField
+        name="name"
+        type="text"
+        value={job.name}
+        onChange={handleChange}
+      />
       <label>Job Description</label>
-      <input
+      <TextField
         name="description"
         type="text"
         value={job.description}
         onChange={handleChange}
       />
-      <button type="submit">Save Info</button>
+      <Button type="submit">Save Info</Button>
     </form>
   );
 }

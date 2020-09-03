@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import PageLayout from "../../../Commons/PageLayout/PageLayout";
 import UserSkills from "./UserCVInfos/UserSkills";
 import UserEducations from "./UserCVInfos/UserEducations";

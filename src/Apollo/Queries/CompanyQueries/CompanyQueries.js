@@ -42,19 +42,6 @@ export const Companies = gql`
   }
 `;
 
-export const CompanyGeneralInfo = gql`
-  query CompanyGeneralInfo($id: Int!) {
-    company(id: $id) {
-      id
-      name
-      user {
-        id
-        username
-      }
-    }
-  }
-`;
-
 export const ContactInfoById = gql`
   query ContactInfoById($id: Int!) {
     contactInfo(id: $id) {

@@ -1,14 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useMutation, useQuery } from "@apollo/client";
+import React from "react";
+import { useMutation } from "@apollo/client";
 import ContactInfoTable from "../../../Commons/CommonComponents/Tables/ContactInfoTable";
-import {
-  Companies,
-  ContactInfoById,
-} from "../../../Apollo/Queries/CompanyQueries/CompanyQueries";
-import {
-  GetUserWorkExperiencesDataForCV,
-  UpdateContactInfo,
-} from "../../../Apollo/Queries/UserQueries/UserQueries";
+import { Companies } from "../../../Apollo/Queries/CompanyQueries/CompanyQueries";
+import { UpdateContactInfo } from "../../../Apollo/Queries/UserQueries/UserQueries";
 
 export default function CompanyContactInfo({ contactInfo }) {
   const [updateContactInfo] = useMutation(UpdateContactInfo);

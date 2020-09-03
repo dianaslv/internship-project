@@ -6,10 +6,16 @@ export const Jobs = gql`
       id
       name
       description
+      createdAt
+      updatedAt
       isAvailable
       company {
         id
         name
+        contactInfo {
+          id
+          avatarUrl
+        }
       }
       jobSkills {
         id
@@ -47,9 +53,14 @@ export const GetJobById = gql`
       name
       description
       isAvailable
+      isAvailable
       company {
         id
         name
+        contactInfo {
+          id
+          avatarUrl
+        }
       }
       jobSkills {
         id
@@ -92,12 +103,6 @@ export const UpdateJob = gql`
   }
 `;
 
-export const DeleteJob = gql`
-  mutation DeleteJob($id: Int!) {
-    deleteJob(id: $id)
-  }
-`;
-
 export const AddJob = gql`
   mutation AddJob(
     $name: String!
@@ -111,54 +116,6 @@ export const AddJob = gql`
       isAvailable: $isAvailable
       companyId: $companyId
     ) {
-      id
-      name
-      description
-      isAvailable
-    }
-  }
-`;
-
-export const GetJobSkillsById = gql`
-  query GetJobSkillsById($id: Int!) {
-    job(id: $id) {
-      jobSkills {
-        id
-        rating
-        skill {
-          id
-          name
-        }
-      }
-    }
-  }
-`;
-
-export const GetJobRequirementsById = gql`
-  query GetJobRequirementsById($id: Int!) {
-    job(id: $id) {
-      jobRequirements {
-        id
-        name
-      }
-    }
-  }
-`;
-
-export const GetJobBenefitsById = gql`
-  query GetJobBenefitsById($id: Int!) {
-    job(id: $id) {
-      jobBenefits {
-        id
-        name
-      }
-    }
-  }
-`;
-
-export const GetJobGeneralInfoById = gql`
-  query GetJobGeneralInfoById($id: Int!) {
-    job(id: $id) {
       id
       name
       description

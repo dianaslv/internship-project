@@ -7,6 +7,7 @@ export default function JobGeneralInfoTable({ jobGeneralInfo }) {
   const [getUpdatedJobs] = useMutation(UpdateJob);
 
   const stopEditing = (i, editedData) => {
+    console.log(editedData.isAvailable);
     const jobAvailability = editedData.isAvailable === "Available";
     getUpdatedJobs({
       variables: {
@@ -35,6 +36,7 @@ export default function JobGeneralInfoTable({ jobGeneralInfo }) {
           name: "isAvailable",
           prop: "isAvailable",
           specialFormatForDisplaying: "jobAvailability",
+          componentForEditing: "AvailabilityRadioButton",
         },
       ]}
       title="Users table"

@@ -1,16 +1,13 @@
-import { useAppContext } from "../../../Context/ContextProvider";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   AddContactInfo,
   UpdateContactInfo,
   UpdateUserContactInfo,
   Users,
-  UsersContactInfo,
 } from "../../../Apollo/Queries/UserQueries/UserQueries";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import AddContactInfoModal from "./AddContactInfoModal";
 import ContactInfoTable from "../../../Commons/CommonComponents/Tables/ContactInfoTable";
-import { ContactInfoById } from "../../../Apollo/Queries/CompanyQueries/CompanyQueries";
 
 export default function UserContactInfo({ contactInfo, userId }) {
   const [updateUserContactInfo] = useMutation(UpdateUserContactInfo);

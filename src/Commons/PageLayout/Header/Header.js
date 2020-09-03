@@ -15,11 +15,11 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import { useStyles } from "./HeaderStyles.js";
 import { Link, Route } from "react-router-dom";
 import { useAppContext } from "../../../Context/ContextProvider";
 import { userTypeRoutes } from "../../../Router/UserTypeRoutes";
+import { ArrowRightIcon } from "@material-ui/pickers/_shared/icons/ArrowRightIcon";
 
 export default function Header({ title }) {
   const classes = useStyles();
@@ -56,7 +56,7 @@ export default function Header({ title }) {
             [classes.appBarShift]: open,
           })}
         >
-          <Toolbar>
+          <Toolbar style={{ background: { color: "#323232" } }}>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -101,11 +101,14 @@ export default function Header({ title }) {
               customRoutes.map((route) => {
                 if (!route.customRoute) {
                   return (
-                    <Link to={route["path"]}>
+                    <Link
+                      to={route["path"]}
+                      style={{ color: "#323232", textDecoration: "none" }}
+                    >
                       <ListItem button>
                         <ListItemIcon>
                           {" "}
-                          <InboxIcon />{" "}
+                          <ArrowRightIcon />{" "}
                         </ListItemIcon>
                         <ListItemText primary={route["name"]} />
                       </ListItem>

@@ -120,55 +120,6 @@ export const DeleteUser = gql`
   }
 `;
 
-export const GetUserEducationsDataForCV = gql`
-  query GetUserEducationsDataForCV($id: Int!) {
-    user(id: $id) {
-      userEducations {
-        id
-        institution
-        description
-        startDate
-        endDate
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
-
-export const GetUserWorkExperiencesDataForCV = gql`
-  query GetUserWorkExperiencesDataForCV($id: Int!) {
-    user(id: $id) {
-      userWorkExperiences {
-        id
-        institution
-        description
-        startDate
-        endDate
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
-export const GetUserSkillsDataForCV = gql`
-  query GetUserSkillsDataForCV($id: Int!) {
-    user(id: $id) {
-      userSkills {
-        id
-        rating
-        skill {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
 export const UpdateContactInfo = gql`
   mutation UpdateContactInfo(
     $id: Int!
@@ -200,74 +151,6 @@ export const UpdateContactInfo = gql`
       country {
         id
         name
-      }
-    }
-  }
-`;
-
-export const GetUsersDataForCV = gql`
-  query GetUsersDataForCV($id: Int!) {
-    user(id: $id) {
-      userEducations {
-        id
-        institution
-        description
-        startDate
-        endDate
-        createdAt
-        updatedAt
-      }
-      userWorkExperiences {
-        id
-        institution
-        description
-        startDate
-        endDate
-        createdAt
-        updatedAt
-      }
-      userSkills {
-        id
-        rating
-        skill {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
-
-export const UsersContactInfo = gql`
-  query GetUsersContactInfo($id: Int!) {
-    user(id: $id) {
-      id
-      contactInfo {
-        id
-        email
-        phone
-        city
-        country {
-          id
-          name
-        }
-        website
-        avatarUrl
-        about
-      }
-    }
-  }
-`;
-
-export const GetUserContactInfo = gql`
-  query GetUserContactInfo($id: Int!) {
-    user(id: $id) {
-      contactInfo {
-        id
       }
     }
   }

@@ -1,7 +1,5 @@
 import JobsPage from "../Pages/JobsApplications/JobsPage";
-import LandingPage from "../Pages/Home/LandingPage";
 import ProfilePage from "../Pages/ProfilePage/Profile/ProfilePage";
-import { Route } from "react-router-dom";
 import React from "react";
 import UsersPage from "../Pages/Administrator/AdminPage";
 import CompanyJobs from "../Pages/Jobs/CompanyJobs";

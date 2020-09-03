@@ -4,7 +4,6 @@ import { AddContactInfo } from "../../../Apollo/Queries/UserQueries/UserQueries"
 import {
   AddCompany,
   Companies,
-  DeleteCompany,
 } from "../../../Apollo/Queries/CompanyQueries/CompanyQueries";
 import CompanyGeneralInfoTable from "./CompanyGeneralInfoTable";
 import CompanyContactInfo from "./CompanyContactInfo";
@@ -19,6 +18,7 @@ export default function CompaniesTable() {
   if (loading) return null;
 
   const handleSubmit = (company) => {
+    console.log(company);
     addContactInfo({
       variables: {
         email: company.email,
@@ -45,17 +45,21 @@ export default function CompaniesTable() {
     });
   };
 
-  return companiesData && companiesData.companies ? (
+  return (
     <>
       <AddCompanyModal handleSubmit={handleSubmit} />
-      {companiesData.companies.map((company, key) => {
-        return (
-          <>
-            <CompanyGeneralInfoTable company={company} />
-            <CompanyContactInfo contactInfo={company.contactInfo} />
-          </>
-        );
-      })}
+      {companiesData && companiesData.companies ? (
+        <>
+          {companiesData.companies.map((company, key) => {
+            return (
+              <>
+                <CompanyGeneralInfoTable company={company} />
+                <CompanyContactInfo contactInfo={company.contactInfo} />
+              </>
+            );
+          })}
+        </>
+      ) : null}
     </>
-  ) : null;
+  );
 }

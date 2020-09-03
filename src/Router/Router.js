@@ -5,10 +5,7 @@ import Register from "../Pages/Register/Register.js";
 import { Switch, Route } from "react-router-dom";
 import { useAppContext } from "../Context/ContextProvider";
 import { userTypeRoutes } from "./UserTypeRoutes";
-import LandingPage from "../Pages/Home/LandingPage";
-import CompanyJobs from "../Pages/Jobs/CompanyJobs";
 import JobsPage from "../Pages/JobsApplications/JobsPage";
-import ProfilePage from "../Pages/ProfilePage/Profile/ProfilePage";
 
 function Router() {
   const { user } = useAppContext();

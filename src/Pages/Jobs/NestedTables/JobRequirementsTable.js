@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import CustomTable from "../../../Commons/CommonComponents/Tables/CustomTable";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import {
   AddJobRequirement,
   DeleteJobRequirement,

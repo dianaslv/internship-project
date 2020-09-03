@@ -6,8 +6,6 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import GeneralInfoForm from "./GeneralInfoForm";
-import RequirementForm from "./RequirementsForm";
-import BenefitsForm from "./BenefitsForm";
 import { useMutation } from "@apollo/client";
 import { AddJob, Jobs } from "../../../Apollo/Queries/JobQueries/JobQueries";
 import { AddJobRequirement } from "../../../Apollo/Queries/JobQueries/JobRequirementsQueries";
@@ -15,6 +13,7 @@ import { AddJobBenefit } from "../../../Apollo/Queries/JobQueries/JobBenefitsQue
 import { AddJobSkill } from "../../../Apollo/Queries/JobQueries/JobSkillsQueries";
 import { AddSkill } from "../../../Apollo/Queries/SkillsQueries";
 import MultipleSkillsForm from "./MultipleSkillsForm";
+import NameInput from "../../../Commons/CommonComponents/Forms/NameInput";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,19 +83,15 @@ export default function AddJobForm(props) {
 
   const handleSubmitRequirements = (listOfRequirements) => {
     const updatedJob = { ...job };
-    console.log("before updated in requirements", updatedJob, job);
     const requirementsNameList = [];
     listOfRequirements.map((requirement, key) => {
       if (requirement.name !== "") {
         requirementsNameList.push(requirement.name);
       }
     });
-    console.log(requirementsNameList);
     updatedJob["requirements"] = requirementsNameList;
     setJob(updatedJob);
-    console.log("after updated in requirements", updatedJob, job);
     handleNext();
-    console.log(activeStep, getSteps().length);
   };
 
   const handleSubmitBenefits = (listOfBenefits) => {
@@ -140,9 +135,9 @@ export default function AddJobForm(props) {
       case 0:
         return <GeneralInfoForm handleSubmit={handleSubmitGeneralInfo} />;
       case 1:
-        return <RequirementForm handleSubmit={handleSubmitRequirements} />;
+        return <NameInput handleSubmit={handleSubmitRequirements} />;
       case 2:
-        return <BenefitsForm handleSubmit={handleSubmitBenefits} />;
+        return <NameInput handleSubmit={handleSubmitBenefits} />;
       default:
         return <MultipleSkillsForm handleSubmit={handleSubmitSkills} />;
     }

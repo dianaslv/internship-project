@@ -40,13 +40,6 @@ export const Jobs = gql`
   }
 `;
 
-export const JobsIds = gql`
-  query jobs {
-    jobs {
-      id
-    }
-  }
-`;
 export const GetJobById = gql`
   query GetJobById($id: Int!) {
     job(id: $id) {

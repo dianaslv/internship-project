@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import JobRequirementsTable from "./NestedTables/JobRequirementsTable";
 import JobBenefitsTable from "./NestedTables/JobBenefitsTable";
-import { Jobs, JobsIds } from "../../Apollo/Queries/JobQueries/JobQueries";
+import { Jobs } from "../../Apollo/Queries/JobQueries/JobQueries";
 import AddJobModal from "./Modals/AddJobModal";
 import JobGeneralInfoTable from "./NestedTables/JobGeneralInfoTable";
 import JobSkillsTable from "./NestedTables/JobSkillsTable";
@@ -30,9 +30,7 @@ const useStyles = makeStyles({
 });
 
 export default function CompanyJobsTable() {
-  const { data, loading } = useQuery(Jobs, {
-    fetchPolicy: "cache-and-network",
-  });
+  const { data, loading } = useQuery(Jobs);
 
   const classes = useStyles();
 

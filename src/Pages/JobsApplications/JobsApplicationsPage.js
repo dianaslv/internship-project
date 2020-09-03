@@ -7,8 +7,6 @@ import {
   UserJobApplication,
 } from "../../Apollo/Queries/UserJobApplicationQueries/UserJobApplicationQueries";
 import JobCard from "./JobCard";
-import UserCv from "./UserCv";
-import Divider from "@material-ui/core/Divider";
 import CardContent from "@material-ui/core/CardContent";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
@@ -34,26 +32,25 @@ const useStyles = makeStyles({
 
 export default function JobsApplicationsPage() {
   const classes = useStyles();
-  const { user, updateUser } = useAppContext();
+  const { user } = useAppContext();
   const {
     data: userJobApplication,
     loading: loadingUserJobApplication,
-  } = useQuery(UserJobApplication);
-  const [getUpdatedUserApplication] = useMutation(UpdateUserApplication);
+  } = useQuery(UserJobApplication, { fetchPolicy: "cache-and-network" });
+  const [updateUserJobApplications] = useMutation(UpdateUserApplication);
   if (loadingUserJobApplication) return null;
-  if (userJobApplication) console.log(userJobApplication);
 
   const handleAcceptJobApplication = (e, jobAppId) => {
     e.preventDefault();
-    getUpdatedUserApplication({
+    updateUserJobApplications({
       variables: {
         id: jobAppId,
         isAccepted: true,
       },
-    }).then((r) => {
-      console.log(r);
+      refetchQueries: [{ query: UserJobApplication }],
     });
   };
+
   return (
     <PageLayout title="Job Applications">
       {
@@ -61,11 +58,7 @@ export default function JobsApplicationsPage() {
           {userJobApplication &&
             userJobApplication.userJobApplications.map((jobApp) => (
               <>
-                {jobApp &&
-                jobApp.user &&
-                jobApp.user.id &&
-                user &&
-                jobApp.user.id === user.id ? (
+                {jobApp ? (
                   <Card className={classes.root} variant="outlined">
                     <CardContent>
                       {user.userRole.toString() === "company_user" ? (
@@ -77,9 +70,6 @@ export default function JobsApplicationsPage() {
                           jobApp.job.company.user.id === user.id ? (
                             <>
                               <JobCard job={jobApp.job} />
-                              {jobApp.user && (
-                                <UserCv userId={jobApp.user.id} />
-                              )}
                               {jobApp.isAccepted ? (
                                 <p>Already Accepted</p>
                               ) : (
@@ -95,14 +85,18 @@ export default function JobsApplicationsPage() {
                           ) : null}
                         </>
                       ) : (
-                        <>
-                          <JobCard job={jobApp.job} />
-                          {jobApp.isAccepted ? (
-                            <p>Accepted</p>
-                          ) : (
-                            <p>Not accepted yet/Rejected</p>
-                          )}
-                        </>
+                        jobApp &&
+                        jobApp.user &&
+                        jobApp.user.id === user.id && (
+                          <>
+                            <JobCard job={jobApp.job} />
+                            {jobApp.isAccepted ? (
+                              <p>Accepted</p>
+                            ) : (
+                              <p>Not accepted yet/Rejected</p>
+                            )}
+                          </>
+                        )
                       )}
                     </CardContent>
                   </Card>

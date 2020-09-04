@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -6,7 +6,7 @@ import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import GeneralInfoForm from "./GeneralInfoForm";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { AddJob, Jobs } from "../../../Apollo/Queries/JobQueries/JobQueries";
 import { AddJobRequirement } from "../../../Apollo/Queries/JobQueries/JobRequirementsQueries";
 import { AddJobBenefit } from "../../../Apollo/Queries/JobQueries/JobBenefitsQueries";
@@ -14,6 +14,9 @@ import { AddJobSkill } from "../../../Apollo/Queries/JobQueries/JobSkillsQueries
 import { AddSkill } from "../../../Apollo/Queries/SkillsQueries";
 import MultipleSkillsForm from "./MultipleSkillsForm";
 import NameInput from "../../../Commons/CommonComponents/Forms/NameInput";
+import { useAppContext } from "../../../Context/ContextProvider";
+import { Companies } from "../../../Apollo/Queries/CompanyQueries/CompanyQueries";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,6 +41,18 @@ export default function AddJobForm(props) {
   const [addJobBenefit] = useMutation(AddJobBenefit);
   const [addJobSkill] = useMutation(AddJobSkill);
   const [addSkill] = useMutation(AddSkill);
+  const { user } = useAppContext();
+  const { data, loading } = useQuery(Companies);
+  let companyId = 1;
+
+  useEffect(() => {
+    if (data && data.companies)
+      data.companies.map((company) => {
+        if (company.user.id === user.id) companyId = company.id;
+      });
+  }, [data]);
+
+  if (loading) return <CircularProgress />;
 
   const isStepOptional = (step) => {
     return step === 1;
@@ -74,7 +89,7 @@ export default function AddJobForm(props) {
     updatedJob.name = name;
     updatedJob.description = description;
     updatedJob.isAvailable = true;
-    updatedJob.companyId = props.companyId;
+    updatedJob.companyId = companyId;
     setJob(updatedJob);
     console.log("after updated in general info", updatedJob, job);
     handleNext();

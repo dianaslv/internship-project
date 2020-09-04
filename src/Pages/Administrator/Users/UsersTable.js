@@ -8,6 +8,7 @@ import {
   Users,
 } from "../../../Apollo/Queries/UserQueries/UserQueries";
 import AddUserModal from "./AddUserModal";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function UsersTable() {
   const [addUser] = useMutation(AddUser);
@@ -15,7 +16,7 @@ export default function UsersTable() {
   const [deleteUser] = useMutation(DeleteUser);
   const { data: users, loading } = useQuery(Users);
 
-  if (loading) return null;
+  if (loading) return <CircularProgress />;
 
   const handleRemove = async (i) => {
     await deleteUser({
@@ -53,6 +54,7 @@ export default function UsersTable() {
         password: submittedUser.password,
         firstName: submittedUser.firstName,
         lastName: submittedUser.lastName,
+        userRoleId: 2,
       },
       update: (cache, { data: user }) => {
         const existingUsers = cache.readQuery({ query: Users });
@@ -90,5 +92,7 @@ export default function UsersTable() {
         title="Users table"
       />
     </>
-  ) : null;
+  ) : (
+    <CircularProgress />
+  );
 }

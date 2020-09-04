@@ -14,6 +14,7 @@ function Register(props) {
         password: user.password,
         firstName: user.firstName,
         lastName: user.lastName,
+        userRoleId: 3,
       },
     }).then((r) => {
       const { history } = props;

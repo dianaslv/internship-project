@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
 import JobCardInfo from "./JobCardInfo";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,7 @@ export default function JobsPage(props) {
   const { user } = useAppContext();
   const classes = useStyles();
 
-  if (loadingJobs) return null;
+  if (loadingJobs) return <CircularProgress />;
 
   function handleClick(jobId) {
     const { history } = props;
@@ -37,7 +38,7 @@ export default function JobsPage(props) {
   return (
     <PageLayout title="Jobs  page" userType={"user"}>
       <Grid container spacing={5}>
-        {jobsData &&
+        {jobsData ? (
           jobsData.jobs.map((job, key) => (
             <Grid item xs={3}>
               <Card className={classes.root}>
@@ -55,7 +56,10 @@ export default function JobsPage(props) {
                 </Button>
               )}
             </Grid>
-          ))}
+          ))
+        ) : (
+          <CircularProgress />
+        )}
       </Grid>
       <br />
     </PageLayout>

@@ -6,6 +6,7 @@ import UserWorkExperiences from "./UserCVInfos/UserWorkExperiences";
 import { useAppContext } from "../../../Context/ContextProvider";
 import { useQuery } from "@apollo/client";
 import { Users } from "../../../Apollo/Queries/UserQueries/UserQueries";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function CVPage() {
   const { user } = useAppContext();
@@ -14,7 +15,7 @@ export default function CVPage() {
       id: user.id,
     },
   });
-  if (loading) return null;
+  if (loading) return <CircularProgress />;
 
   return (
     <PageLayout title="My CV page" userType={"user"}>

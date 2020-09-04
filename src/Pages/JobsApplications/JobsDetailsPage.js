@@ -15,6 +15,7 @@ import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import MuiAlert from "@material-ui/lab/Alert";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -55,8 +56,8 @@ export default function JobsDetailsPage(props) {
     loading: loadingUserJobApplications,
   } = useQuery(UserJobApplication);
 
-  if (loading) return null;
-  if (loadingUserJobApplications) return null;
+  if (loading) return <CircularProgress />;
+  if (loadingUserJobApplications) return <CircularProgress />;
 
   if (!params.id) return null;
 
@@ -167,7 +168,9 @@ export default function JobsDetailsPage(props) {
             </CardActions>
           </Card>
         </PageLayout>
-      ) : null}
+      ) : (
+        <CircularProgress />
+      )}
     </>
   );
 }

@@ -10,6 +10,8 @@ import { Jobs } from "../../Apollo/Queries/JobQueries/JobQueries";
 import AddJobModal from "./Modals/AddJobModal";
 import JobGeneralInfoTable from "./NestedTables/JobGeneralInfoTable";
 import JobSkillsTable from "./NestedTables/JobSkillsTable";
+import { useAppContext } from "../../Context/ContextProvider";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles({
   root: {
@@ -31,44 +33,48 @@ const useStyles = makeStyles({
 
 export default function CompanyJobsTable() {
   const { data, loading } = useQuery(Jobs);
-
+  const { user } = useAppContext();
   const classes = useStyles();
 
-  if (loading) return null;
+  if (loading) return <CircularProgress />;
 
   return data && data.jobs ? (
     <>
-      <AddJobModal companyId={1} />
+      <AddJobModal />
       {data.jobs.map((job, key) => (
         <>
-          <Card className={classes.root} variant="outlined">
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                Job No. {key}
-              </Typography>
-              {job && <JobGeneralInfoTable jobGeneralInfo={job} />}
-              {job.jobRequirements && (
-                <JobRequirementsTable
-                  jobId={job.id}
-                  jobRequirements={job.jobRequirements}
-                />
-              )}
-              {job.jobBenefits && (
-                <JobBenefitsTable
-                  jobId={job.id}
-                  jobBenefits={job.jobBenefits}
-                />
-              )}
-              {job.jobSkills && (
-                <JobSkillsTable jobId={job.id} jobSkills={job.jobSkills} />
-              )}
-            </CardContent>
-          </Card>
+          {job.company && job.company.user && job.company.user.id === user.id && (
+            <Card className={classes.root} variant="outlined">
+              <CardContent>
+                <Typography variant="h5" component="h2">
+                  Job No. {key}
+                </Typography>
+                {job && <JobGeneralInfoTable jobGeneralInfo={job} />}
+                {job.jobRequirements && (
+                  <JobRequirementsTable
+                    jobId={job.id}
+                    jobRequirements={job.jobRequirements}
+                  />
+                )}
+                {job.jobBenefits && (
+                  <JobBenefitsTable
+                    jobId={job.id}
+                    jobBenefits={job.jobBenefits}
+                  />
+                )}
+                {job.jobSkills && (
+                  <JobSkillsTable jobId={job.id} jobSkills={job.jobSkills} />
+                )}
+              </CardContent>
+            </Card>
+          )}
           <br />
           <br />
           <br />
         </>
       ))}
     </>
-  ) : null;
+  ) : (
+    <CircularProgress />
+  );
 }

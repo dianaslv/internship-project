@@ -15,16 +15,13 @@ export default function ContactInfoForm(props) {
   });
 
   const handleChange = (options) => {
-    console.log(options.name, options.value);
     const updatedContactInfo = { ...contactInfo };
     updatedContactInfo[options.name] = options.value;
     if (options.options) {
       const selectedIndex = options.options.selectedIndex;
       const key = options.options[selectedIndex].getAttribute("data-key");
       updatedContactInfo["countryId"] = key;
-      console.log(selectedIndex, key);
     }
-    console.log(updatedContactInfo);
     setContactInfo(updatedContactInfo);
   };
 

@@ -5,6 +5,7 @@ import UserContactInfo from "./UserContactInfo";
 import { useQuery } from "@apollo/client";
 import { Users } from "../../../Apollo/Queries/UserQueries/UserQueries";
 import { useAppContext } from "../../../Context/ContextProvider";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function ProfilePage() {
   const { user } = useAppContext();
@@ -13,7 +14,7 @@ export default function ProfilePage() {
       id: user.id,
     },
   });
-  if (loading) return null;
+  if (loading) return <CircularProgress />;
 
   return (
     <PageLayout title="My profile page" userType={"user"}>

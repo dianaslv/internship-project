@@ -65,13 +65,14 @@ export const AddUser = gql`
     $firstName: String!
     $lastName: String!
     $password: String!
+    $userRoleId: Int!
   ) {
     createUser(
       username: $username
       firstName: $firstName
       lastName: $lastName
       password: $password
-      userRoleId: 3
+      userRoleId: $userRoleId
     ) {
       id
       username

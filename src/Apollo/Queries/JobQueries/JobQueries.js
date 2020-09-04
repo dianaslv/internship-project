@@ -12,6 +12,9 @@ export const Jobs = gql`
       company {
         id
         name
+        user {
+          id
+        }
         contactInfo {
           id
           avatarUrl

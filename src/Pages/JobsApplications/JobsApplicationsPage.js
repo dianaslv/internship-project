@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { Typography } from "@material-ui/core";
 import UserCV from "./UserCV";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles({
   root: {
@@ -38,7 +39,7 @@ export default function JobsApplicationsPage() {
     loading: loadingUserJobApplication,
   } = useQuery(UserJobApplication, { fetchPolicy: "cache-and-network" });
   const [updateUserJobApplications] = useMutation(UpdateUserApplication);
-  if (loadingUserJobApplication) return null;
+  if (loadingUserJobApplication) return <CircularProgress />;
 
   if (userJobApplication) console.log(userJobApplication);
 
@@ -57,7 +58,7 @@ export default function JobsApplicationsPage() {
     <PageLayout title="Job Applications">
       {
         <>
-          {userJobApplication &&
+          {userJobApplication ? (
             userJobApplication.userJobApplications.map((jobApp) => (
               <>
                 {jobApp ? (
@@ -109,9 +110,14 @@ export default function JobsApplicationsPage() {
                       </>
                     )}
                   </>
-                ) : null}
+                ) : (
+                  <CircularProgress />
+                )}
               </>
-            ))}
+            ))
+          ) : (
+            <CircularProgress />
+          )}
         </>
       }
     </PageLayout>

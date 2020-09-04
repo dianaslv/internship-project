@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function JobCardInfo(props) {
-  console.log(props.job);
   const classes = useStyles();
 
   return (

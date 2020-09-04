@@ -36,7 +36,7 @@ export const userTypeRoutes = {
     {
       component: JobsApplicationsPage,
       path: "/myapplications",
-      name: "My Applications",
+      name: "Jobs Applications",
     },
     {
       component: JobsPage,
@@ -51,7 +51,7 @@ export const userTypeRoutes = {
     {
       component: CompanyJobs,
       path: "/companyjobs",
-      name: "Posted JobsApplications Page",
+      name: "Company Jobs",
     },
     {
       component: JobsDetailsPage,
@@ -64,7 +64,7 @@ export const userTypeRoutes = {
     {
       component: JobsApplicationsPage,
       path: "/myapplications",
-      name: "My Applications",
+      name: "Jobs Applications",
     },
     {
       component: JobsPage,

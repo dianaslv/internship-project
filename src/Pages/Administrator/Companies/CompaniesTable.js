@@ -8,6 +8,7 @@ import {
 import CompanyGeneralInfoTable from "./CompanyGeneralInfoTable";
 import CompanyContactInfo from "./CompanyContactInfo";
 import AddCompanyModal from "./AddCompanyModal";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 export default function CompaniesTable() {
   const [addCompany] = useMutation(AddCompany);
@@ -15,7 +16,7 @@ export default function CompaniesTable() {
   const [addContactInfo] = useMutation(AddContactInfo);
   console.log(companiesData);
 
-  if (loading) return null;
+  if (loading) return <CircularProgress />;
 
   const handleSubmit = (company) => {
     console.log(company);
@@ -59,7 +60,9 @@ export default function CompaniesTable() {
             );
           })}
         </>
-      ) : null}
+      ) : (
+        <CircularProgress />
+      )}
     </>
   );
 }
